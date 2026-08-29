@@ -1,0 +1,95 @@
+<div class="home-container">
+  <!-- Carousel Section -->
+  <section
+    class="carousel-section"
+    (mouseenter)="onCarouselHover()"
+    (mouseleave)="onCarouselLeave()"
+  >
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        @if (currentSlide(); as slide) {
+          <div
+            class="carousel-slide active"
+            [style.backgroundImage]="'url(https://via.placeholder.com/1200x500/1f2937/f9fafb?text=' + slide.title.replace(/\s/g, '+') + ')'"
+          >
+            <div class="slide-overlay" [style.background]="slide.bgColor"></div>
+            <div class="slide-content">
+              <h1 class="slide-title">{{ slide.title }}</h1>
+              <p class="slide-subtitle">{{ slide.subtitle }}</p>
+              <button class="carousel-cta-btn">{{ slide.cta }}</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Carousel Controls -->
+      <button class="carousel-nav carousel-prev" (click)="prevSlide()" aria-label="Previous slide">
+        ‹
+      </button>
+      <button class="carousel-nav carousel-next" (click)="nextSlide_()" aria-label="Next slide">
+        ›
+      </button>
+
+      <!-- Carousel Indicators -->
+      <div class="carousel-indicators">
+        @for (slide of carouselSlides; track slide.id; let i = $index) {
+          <button
+            class="indicator"
+            [class.active]="i === currentSlideIndex()"
+            (click)="goToSlide(i)"
+            [attr.aria-label]="'Go to slide ' + (i + 1)"
+          ></button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Menu Section -->
+  <section class="category-section">
+    <div class="category-container">
+      <h2 class="section-title">Shop by Category</h2>
+      <p class="section-subtitle">Choose your style and find the perfect tee</p>
+
+      <div class="category-grid">
+        @for (category of categories; track category.id) {
+          <div class="category-card" (click)="selectCategory(category.id)">
+            <div class="category-media">
+              <img
+                [src]="category.imagePath"
+                [alt]="category.label + ' collection preview'"
+                class="category-image"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="category-media-overlay"></div>
+              <span class="category-eyebrow">{{ category.eyebrow }}</span>
+            </div>
+
+            <div class="category-content">
+              <h3 class="category-label">{{ category.label }}</h3>
+              <p class="category-description">{{ category.description }}</p>
+              <div class="category-footer">
+                <span class="category-link">Explore Collection</span>
+                <span class="category-arrow">→</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Section -->
+  <section class="featured-section">
+    <div class="featured-container">
+      <h2 class="section-title">Featured Collection</h2>
+      <div class="featured-banner">
+        <div class="banner-content">
+          <h3>New Arrivals</h3>
+          <p>Check out our latest DTF designs</p>
+          <button class="featured-cta-btn">Explore All</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
