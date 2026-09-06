@@ -1,16 +1,12 @@
 <div class="home-container">
   <!-- Carousel Section -->
-  <section
-    class="carousel-section"
-    (mouseenter)="onCarouselHover()"
-    (mouseleave)="onCarouselLeave()"
-  >
+  <section class="carousel-section">
     <div class="carousel-wrapper">
       <div class="carousel-track">
         @if (currentSlide(); as slide) {
           <div
             class="carousel-slide active"
-            [style.backgroundImage]="'url(https://via.placeholder.com/1200x500/1f2937/f9fafb?text=' + slide.title.replace(/\s/g, '+') + ')'"
+            [style.backgroundImage]="'url(' + slide.imagePath + ')'"
           >
             <div class="slide-overlay" [style.background]="slide.bgColor"></div>
             <div class="slide-content">
@@ -21,14 +17,6 @@
           </div>
         }
       </div>
-
-      <!-- Carousel Controls -->
-      <button class="carousel-nav carousel-prev" (click)="prevSlide()" aria-label="Previous slide">
-        ‹
-      </button>
-      <button class="carousel-nav carousel-next" (click)="nextSlide_()" aria-label="Next slide">
-        ›
-      </button>
 
       <!-- Carousel Indicators -->
       <div class="carousel-indicators">
