@@ -18,7 +18,6 @@ interface CarouselSlide {
   title: string;
   subtitle: string;
   bgColor: string;
-  cta: string;
   imagePath: string;
 }
 
@@ -39,25 +38,36 @@ export class HomeComponent {
       id: 1,
       title: 'Premium DTF T-Shirts',
       subtitle: 'High-quality direct-to-fabric printing with vibrant colors',
-      bgColor: 'linear-gradient(135deg, rgba(17, 24, 39, 0.75) 0%, rgba(31, 41, 55, 0.6) 65%, rgba(245, 158, 11, 0.3) 100%)',
-      cta: 'Explore Collection',
+      bgColor: 'linear-gradient(135deg, rgba(17, 24, 39, 0.45) 0%, rgba(31, 41, 55, 0.3) 65%, rgba(245, 158, 11, 0.18) 100%)',
       imagePath: '/data/resources/Image/background/background-1.png'
     },
     {
       id: 2,
       title: 'Exclusive Designs',
       subtitle: 'Limited edition graphic tees for every style',
-      bgColor: 'linear-gradient(135deg, rgba(31, 41, 55, 0.78) 0%, rgba(55, 65, 81, 0.6) 60%, rgba(245, 158, 11, 0.25) 100%)',
-      cta: 'Shop Now',
+      bgColor: 'linear-gradient(135deg, rgba(31, 41, 55, 0.45) 0%, rgba(55, 65, 81, 0.3) 60%, rgba(245, 158, 11, 0.15) 100%)',
       imagePath: '/data/resources/Image/background/background-2.png'
     },
     {
       id: 3,
       title: 'Perfect Fit Guaranteed',
       subtitle: 'Comfortable oversized cuts in multiple sizes',
-      bgColor: 'linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(75, 85, 99, 0.6) 70%, rgba(245, 158, 11, 0.2) 100%)',
-      cta: 'View Sizes',
+      bgColor: 'linear-gradient(135deg, rgba(17, 24, 39, 0.48) 0%, rgba(75, 85, 99, 0.3) 70%, rgba(245, 158, 11, 0.12) 100%)',
       imagePath: '/data/resources/Image/background/background-3.png'
+    },
+    {
+      id: 4,
+      title: 'Bold Statement Prints',
+      subtitle: 'Standout graphics crafted for everyday confidence',
+      bgColor: 'linear-gradient(135deg, rgba(17, 24, 39, 0.45) 0%, rgba(55, 65, 81, 0.3) 65%, rgba(245, 158, 11, 0.16) 100%)',
+      imagePath: '/data/resources/Image/background/background-4F.png'
+    },
+    {
+      id: 5,
+      title: 'Style That Speaks',
+      subtitle: 'Fresh drops crafted to keep your wardrobe on point',
+      bgColor: 'linear-gradient(135deg, rgba(17, 24, 39, 0.45) 0%, rgba(31, 41, 55, 0.3) 65%, rgba(245, 158, 11, 0.18) 100%)',
+      imagePath: '/data/resources/Image/background/background-5.png'
     }
   ];
 
@@ -95,7 +105,7 @@ export class HomeComponent {
     effect(() => {
       const interval = setInterval(() => {
         this.nextSlide_();
-      }, 3000);
+      }, 5000);
 
       return () => clearInterval(interval);
     });

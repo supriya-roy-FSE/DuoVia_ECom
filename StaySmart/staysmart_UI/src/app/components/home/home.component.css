@@ -1,5 +1,5 @@
 :host {
-  --carousel-height: 500px;
+  --carousel-height: 496px;
   --card-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --primary: #f59e0b;
   --background: #fafafa;
@@ -64,7 +64,7 @@
 .slide-overlay {
   position: absolute;
   inset: 0;
-  opacity: 0.96;
+  opacity: 0.45;
   z-index: 1;
 }
 
@@ -72,24 +72,20 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  color: var(--color-white, #ffffff);
+  color: #000000;
   max-width: 680px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.5rem 2rem;
   border-radius: 20px;
-  background: rgba(17, 24, 39, 0.42);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10px);
   animation: slideUp 0.8s ease-out 0.2s both;
 }
 
 .slide-title {
   margin: 0 0 0.5rem 0;
   font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-extrabold);
+  font-weight: var(--font-weight-regular);
   line-height: 1.1;
-  letter-spacing: var(--letter-spacing-tight);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  letter-spacing: normal;
+  color: #000000;
 }
 
 .slide-subtitle {
@@ -97,32 +93,8 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-relaxed);
-  letter-spacing: var(--letter-spacing-normal);
-  opacity: 0.95;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-}
-
-.carousel-cta-btn {
-  padding: 0.875rem 2rem;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-wide);
-  border: 1px solid rgba(245, 158, 11, 0.55);
-  background: var(--primary);
-  color: #111827;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: var(--card-transition);
-
-  &:hover {
-    background: #fbbf24;
-    transform: translateY(-2px);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-  }
+  letter-spacing: normal;
+  color: #000000;
 }
 
 @keyframes slideIn {
