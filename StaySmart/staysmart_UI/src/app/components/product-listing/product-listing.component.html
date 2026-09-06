@@ -1,0 +1,96 @@
+<div class="listing-container">
+  <!-- Header -->
+  <header class="listing-header">
+    <div class="header-top">
+      <button class="back-button" (click)="goBack()" aria-label="Go back to home">
+        ← Back to Home
+      </button>
+      <h1 class="category-title">{{ getCategoryLabel() }}</h1>
+    </div>
+
+    <!-- Search and Sort Bar -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search products..."
+          (input)="onSearchChange($event.target.value)"
+          aria-label="Search products"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <div class="sort-controls">
+        <select
+          class="sort-select"
+          [value]="selectedSort()"
+          (change)="handleSortChange($any($event))"
+          aria-label="Sort products"
+        >
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+        <span class="results-count">{{ resultsCount() }} Products</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Products Grid -->
+  <section class="products-section">
+    @if (sortedProducts().length > 0) {
+      <div class="products-grid">
+        @for (product of sortedProducts(); track product.id) {
+          <article class="product-card" (click)="selectProduct(product)">
+            <!-- Product Image -->
+            <div class="product-image-container">
+              <img
+                [src]="product.mainImageUrl"
+                [alt]="product.name"
+                class="product-image"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="product-overlay">
+                <button class="quick-view-btn" aria-label="View product details">
+                  Quick View
+                </button>
+              </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-description">{{ product.description }}</p>
+
+              <!-- Tags -->
+              <div class="product-tags">
+                @for (tag of product.tags.slice(0, 2); track tag) {
+                  <span class="tag">{{ tag }}</span>
+                }
+              </div>
+
+              <!-- Price and CTA -->
+              <div class="product-footer">
+                <span class="product-price">{{ formatPrice(product.basePrice) }}</span>
+                <button class="add-to-cart-btn" aria-label="Add to cart">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="no-results">
+        <p class="no-results-icon">📦</p>
+        <h3>No Products Found</h3>
+        <p>Try adjusting your search or filters</p>
+        <button class="clear-search-btn" (click)="onSearchChange('')">
+          Clear Search
+        </button>
+      </div>
+    }
+  </section>
+</div>

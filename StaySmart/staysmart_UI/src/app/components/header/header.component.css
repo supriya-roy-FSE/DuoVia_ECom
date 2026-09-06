@@ -1,0 +1,104 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Top-right corner: logo + wishlist icon only */
+.brand-strip {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-md, 1rem);
+  padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
+  background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity var(--transition-fast, 150ms ease-in-out);
+}
+
+.brand:hover {
+  opacity: 0.85;
+}
+
+.brand-logo {
+  height: 56px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+  padding: 6px 12px;
+  flex-shrink: 0;
+}
+
+/* Wishlist */
+.wishlist-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast, 150ms ease-in-out),
+    color var(--transition-fast, 150ms ease-in-out);
+}
+
+.wishlist-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--primary, #f59e0b);
+}
+
+.wishlist-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.wishlist-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--primary, #f59e0b);
+  color: #111827;
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 16px;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .brand-strip {
+    padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem);
+  }
+
+  .brand-logo {
+    height: 40px;
+    max-width: 160px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-strip {
+    padding: var(--spacing-xs, 0.25rem) var(--spacing-sm, 0.5rem);
+  }
+}
+
+

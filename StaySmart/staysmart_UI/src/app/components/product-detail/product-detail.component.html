@@ -1,0 +1,240 @@
+<div class="cyber-bg-container">
+  <!-- CRT Scanline Overlay -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+
+  <!-- Main Content Container -->
+  <div class="content-wrapper">
+    <!-- Header with Back Button -->
+    <div class="product-header">
+      <button class="back-button" (click)="goBack()" aria-label="Go back">
+        {{ backButtonLabel() }}
+      </button>
+      @if (category(); as cat) {
+        <span class="category-badge">{{ cat | titlecase }}</span>
+      }
+    </div>
+
+    <!-- Left Column: Gallery & Main Preview -->
+    <aside class="gallery-section">
+      <!-- Main Preview Stage -->
+      <div class="preview-stage">
+        <img
+          [src]="currentImageUrl()"
+          [alt]="product().name + ' preview'"
+          class="preview-image"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      <!-- Thumbnail Grid (10 items) -->
+      <div class="thumbnail-grid">
+        @for (thumbnail of product().thumbnailImages; track $index) {
+          <button
+            class="thumbnail-item"
+            [class.active]="getCurrentThumbnailIndex() === $index"
+            (click)="selectThumbnail($index)"
+            [attr.aria-label]="'View product image ' + getFormattedIndex($index)"
+            [attr.aria-Current]="getCurrentThumbnailIndex() === $index ? 'step' : undefined"
+          >
+            <!-- Index Badge -->
+            <span class="index-badge">{{ getFormattedIndex($index) }}</span>
+
+            <!-- Thumbnail Image -->
+            <img
+              [src]="thumbnail"
+              [alt]="'Thumbnail ' + getFormattedIndex($index)"
+              class="thumbnail-image"
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+        }
+      </div>
+    </aside>
+
+    <!-- Right Column: Product Details -->
+    <main class="details-section">
+      <!-- RGB-Split Glitch Title -->
+      <div class="glitch-title-container">
+        <h1 class="glitch-title" [attr.data-text]="product().name">
+          {{ product().name }}
+        </h1>
+      </div>
+
+      <!-- SKU & Tech Specs -->
+      <div class="tech-specs">
+        <div class="spec-row">
+          <span class="spec-label">SKU:</span>
+          <span class="spec-value">{{ product().sku }}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">FABRIC:</span>
+          <span class="spec-value">{{ product().fabricSpecs }}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">PRICE:</span>
+          <span class="spec-value">{{ formatPrice(product().basePrice) }}</span>
+        </div>
+        @if (product().uploadDate) {
+          <div class="spec-row">
+            <span class="spec-label">UPLOADED:</span>
+            <span class="spec-value">{{ product().uploadDate }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Size Selector -->
+      <div class="size-selector-section">
+        <h2 class="section-label">SELECT SIZE</h2>
+        <div class="size-pills">
+          @for (size of product().sizeOptions; track size) {
+            <button
+              class="size-pill"
+              [class.active]="isSizeSelected(size)"
+              (click)="selectSize(size)"
+              [attr.aria-pressed]="isSizeSelected(size)"
+              [attr.aria-label]="'Select size ' + size"
+            >
+              {{ size }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- CTA & Action Buttons Section -->
+      <div class="action-buttons-section">
+        <!-- Primary CTA: Request Stock Inquiry -->
+        <button
+          class="btn-primary btn-inquiry"
+          (click)="openInquiryModal()"
+          [attr.aria-label]="'Request stock inquiry for ' + product().name"
+        >
+          <span class="btn-text">[ REQUEST STOCK INQUIRY ]</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+
+        <!-- Secondary: Wishlist Toggle -->
+        <button
+          class="btn-secondary btn-wishlist"
+          (click)="toggleWishlist()"
+          [class.wishlisted]="isCurrentProductWishlisted()"
+          [attr.aria-label]="isCurrentProductWishlisted() ? 'Remove from wishlist' : 'Add to wishlist'"
+          [attr.aria-pressed]="isCurrentProductWishlisted()"
+        >
+          {{ wishlistButtonLabel() }}
+        </button>
+      </div>
+
+      <!-- Product Description -->
+      <div class="description-section">
+        <p class="description-text">{{ product().description }}</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Order Inquiry Modal Overlay -->
+  @if (isModalOpen()) {
+    <div class="modal-overlay" (click)="closeInquiryModal()" role="presentation">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h2 class="modal-title">STOCK INQUIRY REQUEST</h2>
+          <button
+            class="modal-close-btn"
+            (click)="closeInquiryModal()"
+            aria-label="Close modal"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="modal-content">
+          <!-- User Info Display -->
+          <div class="user-info-card">
+            <h3 class="info-title">CUSTOMER DETAILS</h3>
+            <div class="info-row">
+              <span class="info-label">Name:</span>
+              <span class="info-value">{{ userSession().name }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email:</span>
+              <span class="info-value">{{ userSession().email }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Phone:</span>
+              <span class="info-value">{{ userSession().phone }}</span>
+            </div>
+          </div>
+
+          <!-- Product Summary -->
+          <div class="product-summary-card">
+            <h3 class="summary-title">ORDER SUMMARY</h3>
+            <div class="summary-grid">
+              <!-- Product Image -->
+              <img
+                [src]="currentImageUrl()"
+                [alt]="product().name"
+                class="summary-image"
+                loading="eager"
+                decoding="async"
+              />
+
+              <!-- Summary Details -->
+              <div class="summary-details">
+                <div class="summary-row">
+                  <span class="summary-label">Product ID:</span>
+                  <span class="summary-value">{{ product().id }}</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-label">Selected Size:</span>
+                  <span class="size-badge">{{ selectedSize() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submission Status Messages -->
+          @if (submissionResult()) {
+            <div
+              [class]="'submission-message ' + (submissionResult()?.success ? 'success' : 'error')"
+              role="alert"
+            >
+              <p>{{ submissionResult()?.message }}</p>
+              @if (submissionResult()?.referenceCode) {
+                <p class="reference-code">Reference: {{ submissionResult()?.referenceCode }}</p>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button
+            class="btn-secondary"
+            (click)="closeInquiryModal()"
+            [disabled]="isSubmitting()"
+            type="button"
+          >
+            CANCEL
+          </button>
+          <button
+            class="btn-primary"
+            (click)="submitOrderInquiry()"
+            [disabled]="isSubmitting()"
+            [class.loading]="isSubmitting()"
+            type="button"
+          >
+            @if (isSubmitting()) {
+              <span>SUBMITTING...</span>
+            } @else {
+              <span>CONFIRM & NOTIFY STUDIO</span>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
