@@ -1,0 +1,38 @@
+<header class="site-header">
+  <!-- Top-right corner: logo (links home) + wishlist icon, nothing else -->
+  <div class="brand-strip">
+    <a class="brand" routerLink="/" aria-label="DuoVia Styles home">
+      <img
+        class="brand-logo"
+        [src]="logoPath"
+        alt="DuoVia Styles logo"
+        width="200"
+        height="56"
+      />
+    </a>
+
+    <button
+      type="button"
+      class="wishlist-btn"
+      aria-label="View wishlist"
+    >
+      <svg
+        class="wishlist-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 20.5s-7.5-4.6-10-9.2C.5 8 1.8 4.5 5.1 3.4 7.4 2.6 9.8 3.4 12 5.7c2.2-2.3 4.6-3.1 6.9-2.3 3.3 1.1 4.6 4.6 3.1 7.9-2.5 4.6-10 9.2-10 9.2Z"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linejoin="round"
+        />
+      </svg>
+      @if (wishlistCount() > 0) {
+        <span class="wishlist-badge">{{ wishlistCount() }}</span>
+      }
+    </button>
+  </div>
+</header>
