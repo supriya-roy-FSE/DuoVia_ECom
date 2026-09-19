@@ -8,7 +8,7 @@
       "uploadDate": "2026-08-20",
       "price": 1499,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Bikers_Delight_1"
+      "imageFolderPath": "data/resources/Image/Bikers_Delight_1"
     },
     {
       "productName": "Uma_1",
@@ -18,7 +18,7 @@
       "uploadDate": "2026-08-21",
       "price": 1699,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Uma_1"
+      "imageFolderPath": "data/resources/Image/Uma_1"
     },
     {
       "productName": "Uma-2",
@@ -28,7 +28,7 @@
       "uploadDate": "2026-08-22",
       "price": 1899,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Uma-2"
+      "imageFolderPath": "data/resources/Image/Uma-2"
     },
     {
       "productName": "Kolkata",
@@ -38,7 +38,7 @@
       "uploadDate": "2026-08-23",
       "price": 1999,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Kolkata"
+      "imageFolderPath": "data/resources/Image/Kolkata"
     },
     {
       "productName": "Nature",
@@ -48,7 +48,7 @@
       "uploadDate": "2026-08-24",
       "price": 1599,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Nature"
+      "imageFolderPath": "data/resources/Image/Nature"
     },
     {
       "productName": "Pwesome_1",
@@ -58,7 +58,7 @@
       "uploadDate": "2026-08-25",
       "price": 1749,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Pwesome_1"
+      "imageFolderPath": "data/resources/Image/Pwesome_1"
     },
     {
       "productName": "Sanatani_1",
@@ -68,7 +68,7 @@
       "uploadDate": "2026-08-26",
       "price": 2099,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Sanatani_1"
+      "imageFolderPath": "data/resources/Image/Sanatani_1"
     },
     {
       "productName": "Test Women Tee Delta",
@@ -78,7 +78,7 @@
       "uploadDate": "2026-08-27",
       "price": 2199,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Test Women Tee Delta"
+      "imageFolderPath": "data/resources/Image/Test Women Tee Delta"
     },
     {
       "productName": "Test Kids Tee Alpha",
@@ -88,7 +88,7 @@
       "uploadDate": "2026-08-18",
       "price": 999,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Test Kids Tee Alpha"
+      "imageFolderPath": "data/resources/Image/Test Kids Tee Alpha"
     },
     {
       "productName": "Test Kids Tee Beta",
@@ -98,7 +98,7 @@
       "uploadDate": "2026-08-19",
       "price": 1099,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Test Kids Tee Beta"
+      "imageFolderPath": "data/resources/Image/Test Kids Tee Beta"
     },
     {
       "productName": "Test Kids Tee Gamma",
@@ -108,7 +108,7 @@
       "uploadDate": "2026-08-20",
       "price": 1199,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Test Kids Tee Gamma"
+      "imageFolderPath": "data/resources/Image/Test Kids Tee Gamma"
     },
     {
       "productName": "Test Kids Tee Delta",
@@ -118,7 +118,7 @@
       "uploadDate": "2026-08-21",
       "price": 1299,
       "priceCurrency": "INR",
-      "imageFolderPath": "/data/resources/Image/Test Kids Tee Delta"
+      "imageFolderPath": "data/resources/Image/Test Kids Tee Delta"
     }
   ]
 }

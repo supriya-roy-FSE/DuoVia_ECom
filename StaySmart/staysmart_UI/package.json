@@ -5,9 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "node -e \"const fs=require('fs');const s='dist/DuoVia_ECom/browser/index.csr.html';const d='dist/DuoVia_ECom/browser/index.html';if(fs.existsSync(s)){fs.copyFileSync(s,d);}\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:DuoVia_ECom": "node dist/DuoVia_ECom/server/server.mjs"
+    "serve:ssr:DuoVia_ECom": "node dist/DuoVia_ECom/server/server.mjs",
+    "deploy": "npm run build && npx angular-cli-ghpages --dir=dist/DuoVia_ECom/browser"
   },
   "private": true,
   "packageManager": "npm@11.9.0",

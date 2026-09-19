@@ -18,7 +18,7 @@ import { WishlistService } from '../../services/wishlist.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  readonly logoPath = '/data/resources/Image/logo/Duovia_Styles_logo.jpg';
+  readonly logoPath = 'data/resources/Image/logo/Duovia_Styles_logo.jpg';
 
   readonly wishlistCount = computed(() => this.wishlistService.wishlisted().length);
 

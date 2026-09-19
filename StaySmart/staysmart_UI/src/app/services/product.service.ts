@@ -218,7 +218,7 @@ export class ProductService {
   }
 
   private loadCatalogData(): void {
-    this.http.get<ImageCatalogPayload>('/data/image-catalog.json').subscribe({
+    this.http.get<ImageCatalogPayload>('data/image-catalog.json').subscribe({
       next: payload => {
         const productEntries = this.getValidProductEntries(payload);
         if (productEntries.length === 0) {
