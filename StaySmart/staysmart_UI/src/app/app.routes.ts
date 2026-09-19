@@ -15,5 +15,9 @@ export const routes: Routes = [
 	{
 		path: 'products/:category/:productId',
 		component: ProductDetailComponent
+	},
+	{
+		path: '**',
+		redirectTo: ''
 	}
 ];

@@ -101,7 +101,7 @@ export class HomeComponent {
   nextSlide = computed(() => this.carouselSlides[this.nextSlideIndex()]);
 
   constructor(private router: Router) {
-    // Auto-rotate carousel every 3 seconds, uninterrupted
+    // Auto-rotate carousel every 5 seconds, uninterrupted
     effect(() => {
       const interval = setInterval(() => {
         this.nextSlide_();
