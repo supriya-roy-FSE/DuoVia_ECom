@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { ProductSelectionItem, ProductCategory, Size, TShirtProduct } from '../models/tshirt.model';
 
 /**
  * Wishlist Service
@@ -11,14 +12,14 @@ export class WishlistService {
   private readonly STORAGE_KEY = 'user_wishlist';
   
   // Signal to hold the current wishlist
-  wishlisted = signal<string[]>(this.loadFromStorage());
+  wishlisted = signal<ProductSelectionItem[]>(this.loadFromStorage());
 
   constructor() {}
 
   /**
    * Load wishlist from localStorage on service initialization
    */
-  private loadFromStorage(): string[] {
+  private loadFromStorage(): ProductSelectionItem[] {
     if (typeof window === 'undefined') {
       return [];
     }
@@ -35,7 +36,7 @@ export class WishlistService {
   /**
    * Save wishlist to localStorage whenever it changes
    */
-  private saveToStorage(items: string[]): void {
+  private saveToStorage(items: ProductSelectionItem[]): void {
     if (typeof window === 'undefined') {
       return;
     }
@@ -49,26 +50,53 @@ export class WishlistService {
 
   /**
    * Toggle product in wishlist and persist to localStorage
-   * @param productId - The product ID to toggle
+   * @param product - The product to toggle
+   * @param size - The size of the product
+   * @param imageUrl - The image URL of the product
+   * @returns - The toggled product selection item or null if removed
    */
-  toggleWishlist(productId: string): void {
-    this.wishlisted.update(current => {
-      const updated = current.includes(productId)
-        ? current.filter(id => id !== productId)
-        : [...current, productId];
-      
-      this.saveToStorage(updated);
-      return updated;
-    });
+  toggleWishlist(product: TShirtProduct, size: Size, imageUrl: string): ProductSelectionItem | null {
+    const item: ProductSelectionItem = {
+      itemUniqueId: this.buildItemUniqueId(product.id, size),
+      productId: product.id,
+      productName: product.name,
+      category: (product.category ?? 'men') as ProductCategory,
+      size,
+      imageUrl,
+      quantity: 1,
+      orderType: 'wishlist',
+      addedAt: new Date().toISOString()
+    };
+
+    const current = this.wishlisted();
+    const exists = current.some(entry => entry.itemUniqueId === item.itemUniqueId);
+
+    const updated = exists
+      ? current.filter(entry => entry.itemUniqueId !== item.itemUniqueId)
+      : [...current, item];
+
+    this.wishlisted.set(updated);
+    this.saveToStorage(updated);
+
+    return exists ? null : item;
   }
 
   /**
    * Check if a product is in the wishlist
    * @param productId - The product ID to check
+   * @param size - The size to check
    * @returns - True if product is wishlisted
    */
-  isWishlisted(productId: string): boolean {
-    return this.wishlisted().includes(productId);
+  isWishlisted(productId: string, size: Size): boolean {
+    return this.wishlisted().some(entry => entry.productId === productId && entry.size === size);
+  }
+
+  /**
+   * Get all items in the wishlist
+   * @returns - Array of wishlisted product selection items
+   */
+  getWishlistItems(): ProductSelectionItem[] {
+    return this.wishlisted();
   }
 
   /**
@@ -85,5 +113,15 @@ export class WishlistService {
    */
   getWishlistCount(): number {
     return this.wishlisted().length;
+  }
+
+  /**
+   * Build a unique ID for a wishlist item based on product ID and size
+   * @param productId - The product ID
+   * @param size - The size
+   * @returns - A unique identifier string
+   */
+  private buildItemUniqueId(productId: string, size: Size): string {
+    return `${productId}-${size}-${Date.now().toString(36)}`;
   }
 }

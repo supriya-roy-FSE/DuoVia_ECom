@@ -1,0 +1,78 @@
+<div class="admin-shell">
+  <aside class="sidebar">
+    <div class="brand-block">
+      <span class="brand-mark">DS</span>
+      <div>
+        <strong>DuoVia</strong>
+        <small>Admin</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/admin/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/admin/orders" class="nav-item active">Orders</a>
+      <a routerLink="/admin/reviews" class="nav-item">Reviews</a>
+      <a routerLink="/admin/analytics" class="nav-item">Analytics</a>
+      <button type="button" class="nav-item logout-btn" (click)="logout()">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Operations</p>
+        <h2>Orders</h2>
+      </div>
+    </header>
+
+    <section class="toolbar">
+      <input
+        type="search"
+        placeholder="Search by order, customer, email, mobile or product"
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+      />
+
+      <select [value]="selectedStatus()" (change)="selectedStatus.set($any($event.target).value)">
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status === 'all' ? 'All statuses' : getStatusLabel(status) }}</option>
+        }
+      </select>
+    </section>
+
+    <section class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Type</th>
+              <th>Items</th>
+              <th>Status</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of filteredOrders(); track order.orderUniqueId) {
+              <tr>
+                <td>
+                  <strong>{{ order.orderUniqueId }}</strong><br />
+                  <small>{{ order.createdAt | date:'mediumDate' }}</small>
+                </td>
+                <td>
+                  {{ order.customerName }}<br />
+                  <small>{{ order.email }}</small>
+                </td>
+                <td>{{ order.orderType }}</td>
+                <td>{{ order.itemCount }}</td>
+                <td><span class="status-pill">{{ order.status }}</span></td>
+                <td>₹{{ order.totalAmount }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>

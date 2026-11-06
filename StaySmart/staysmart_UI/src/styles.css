@@ -3,14 +3,14 @@
 :root {
   /* Semantic Colors */
   --primary: #f59e0b;
-  --background: #fafafa;
+  --background: #e5e7eb;
   --surface: #ffffff;
   --text: #1f2937;
   --text-secondary: #4b5563;
-  --border: #e5e7eb;
+  --border: #d1d5db;
 
   /* Font Families */
-  --font-family-base: 'Poppins', 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-base: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
   --font-family-mono: 'Cascadia Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
   /* Type Scale */
@@ -66,6 +66,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  background-color: #e5e7eb;
 }
 
 body {
@@ -75,7 +76,7 @@ body {
   line-height: var(--line-height-relaxed);
   letter-spacing: var(--letter-spacing-normal);
   color: var(--text);
-  background-color: var(--background);
+  background-color: #e5e7eb;
 }
 
 h1, h2, h3, h4, h5, h6 {

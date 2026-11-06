@@ -702,6 +702,47 @@
 }
 
 /* ============================================================================
+   CART & CHECKOUT STYLES
+   ============================================================================ */
+
+/* Cart and status states */
+.btn-cart {
+  background: #0f172a;
+  border-color: #0f172a;
+}
+
+.btn-cart.cart-added {
+  background: #166534;
+  border-color: #166534;
+}
+
+.btn-checkout {
+  margin-top: 0.25rem;
+}
+
+.submission-status {
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.submission-status.success {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #166534;
+}
+
+.submission-status.error {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #991b1b;
+}
+
+/* ============================================================================
    ACCESSIBILITY & RESPONSIVE
    ============================================================================ */
 

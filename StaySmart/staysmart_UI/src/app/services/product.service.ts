@@ -20,7 +20,7 @@ export class ProductService {
         name: 'Classic Black Crew Neck',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Timeless black tee perfect for any occasion',
-        basePrice: 1999,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['black', 'classic', 'crew-neck'],
         thumbnailImages: [
@@ -35,7 +35,7 @@ export class ProductService {
         name: 'Oversized Graphic Tee',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Bold graphic design with premium comfort',
-        basePrice: 2199,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['graphic', 'oversized', 'casual'],
         thumbnailImages: [
@@ -50,7 +50,7 @@ export class ProductService {
         name: 'Minimalist White Tee',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Clean minimalist design on premium white cotton',
-        basePrice: 1799,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['white', 'minimalist', 'clean'],
         thumbnailImages: [
@@ -65,7 +65,7 @@ export class ProductService {
         name: 'Premium Navy Blue',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Deep navy blue with subtle design accents',
-        basePrice: 2099,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['navy', 'premium', 'business-casual'],
         thumbnailImages: [
@@ -82,7 +82,7 @@ export class ProductService {
         name: 'Fitted Pastel Pink',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Soft pastel pink fitted design for women',
-        basePrice: 1999,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['pink', 'fitted', 'pastel'],
         thumbnailImages: [
@@ -97,7 +97,7 @@ export class ProductService {
         name: 'Vintage Style Crop Top',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Trendy crop top with vintage aesthetic',
-        basePrice: 1899,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['crop', 'vintage', 'trendy'],
         thumbnailImages: [
@@ -112,7 +112,7 @@ export class ProductService {
         name: 'Empowerment Graphic Tee',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Inspiring graphic design celebrating women',
-        basePrice: 2199,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['graphic', 'empowerment', 'statement'],
         thumbnailImages: [
@@ -127,7 +127,7 @@ export class ProductService {
         name: 'Elegant Burgundy',
         fabricSpecs: '240 GSM | 100% Cotton | DTF Print',
         description: 'Sophisticated burgundy tee for all occasions',
-        basePrice: 2099,
+        basePrice: 599,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['burgundy', 'elegant', 'sophisticated'],
         thumbnailImages: [
@@ -144,7 +144,7 @@ export class ProductService {
         name: 'Colorful Rainbow Tee',
         fabricSpecs: '200 GSM | 100% Cotton | DTF Print',
         description: 'Bright and fun rainbow design for kids',
-        basePrice: 1299,
+        basePrice: 499,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['rainbow', 'colorful', 'fun'],
         thumbnailImages: [
@@ -159,7 +159,7 @@ export class ProductService {
         name: 'Adventure Animal Prints',
         fabricSpecs: '200 GSM | 100% Cotton | DTF Print',
         description: 'Cute animal designs kids love',
-        basePrice: 1399,
+        basePrice: 499,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['animals', 'cute', 'playful'],
         thumbnailImages: [
@@ -174,7 +174,7 @@ export class ProductService {
         name: 'Space Explorer Graphic',
         fabricSpecs: '200 GSM | 100% Cotton | DTF Print',
         description: 'Awesome space-themed graphic for young adventurers',
-        basePrice: 1499,
+        basePrice: 499,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['space', 'adventure', 'explorer'],
         thumbnailImages: [
@@ -189,7 +189,7 @@ export class ProductService {
         name: 'Superhero Squad Tee',
         fabricSpecs: '200 GSM | 100% Cotton | DTF Print',
         description: 'Empower kids with superhero-inspired designs',
-        basePrice: 1399,
+        basePrice: 499,
         sizeOptions: ['S', 'M', 'L', 'XL', 'XXL'],
         tags: ['superhero', 'empowerment', 'cool'],
         thumbnailImages: [

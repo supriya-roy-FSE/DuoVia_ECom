@@ -106,23 +106,42 @@
       <div class="action-buttons-section">
         <!-- Primary CTA: Request Stock Inquiry -->
         <button
-          class="btn-primary btn-inquiry"
+          class="btn-primary btn-cart"
+          type="button"
+          (click)="addToCart()"
+          [class.cart-added]="isCartAdded()"
+          [attr.aria-label]="'Add ' + product().name + ' to cart'"
+        >
+          <span class="btn-text">{{ cartButtonLabel() }}</span>
+        </button>
+
+        <button
+          class="btn-secondary btn-inquiry"
+          type="button"
           (click)="openInquiryModal()"
           [attr.aria-label]="'Request stock inquiry for ' + product().name"
         >
           <span class="btn-text">[ REQUEST STOCK INQUIRY ]</span>
-          <span class="btn-glow" aria-hidden="true"></span>
         </button>
 
-        <!-- Secondary: Wishlist Toggle -->
         <button
           class="btn-secondary btn-wishlist"
+          type="button"
           (click)="toggleWishlist()"
           [class.wishlisted]="isCurrentProductWishlisted()"
           [attr.aria-label]="isCurrentProductWishlisted() ? 'Remove from wishlist' : 'Add to wishlist'"
           [attr.aria-pressed]="isCurrentProductWishlisted()"
         >
           {{ wishlistButtonLabel() }}
+        </button>
+
+        <button
+          class="btn-primary btn-checkout"
+          type="button"
+          (click)="placeOrderFromCart()"
+          [disabled]="cartCount() === 0 || isSubmitting()"
+        >
+          <span class="btn-text">[ CHECKOUT CART ({{ cartCount() }}) ]</span>
         </button>
       </div>
 

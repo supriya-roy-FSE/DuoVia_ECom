@@ -18,6 +18,46 @@ export interface TShirtProduct {
 }
 
 export type Size = 'S' | 'M' | 'L' | 'XL' | 'XXL';
+export type ProductCategory = 'men' | 'women' | 'kids';
+export type OrderEntryType = 'cart' | 'wishlist' | 'checkout';
+
+export interface ProductSelectionItem {
+  itemUniqueId: string;
+  productId: string;
+  productName: string;
+  category: ProductCategory;
+  size: Size;
+  imageUrl: string;
+  quantity: number;
+  orderType: 'cart' | 'wishlist';
+  addedAt: string;
+}
+
+export interface OrderSheetRow {
+  customerName: string;
+  mobile: string;
+  email: string;
+  orderType: OrderEntryType;
+  itemCount: number;
+  orderUniqueId: string;
+  itemUniqueId: string;
+  productId: string;
+  productName: string;
+  category: ProductCategory;
+  size: Size;
+  imageUrl: string;
+  orderedAt: string;
+}
+
+export interface OrderCheckoutPayload {
+  customerName: string;
+  mobile: string;
+  email: string;
+  orderType: OrderEntryType;
+  itemCount: number;
+  orderUniqueId: string;
+  rows: OrderSheetRow[];
+}
 
 export interface ImageCatalogEntry {
   imageId: string;

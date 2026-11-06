@@ -94,7 +94,7 @@ export class ProductListingComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return 'â‚¹' + price.toLocaleString('en-IN');
+    return `₹${Number(price).toLocaleString('en-IN')}`;
   }
 
   getCategoryLabel(): string {

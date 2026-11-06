@@ -1,0 +1,45 @@
+<div class="admin-login-page">
+  <div class="login-panel">
+    <div class="login-brand">
+      <span class="brand-badge">DS</span>
+      <div>
+        <p class="eyebrow">Admin access</p>
+        <h1>DuoVia Styles</h1>
+      </div>
+    </div>
+
+    <form class="login-form" (submit)="login(); $event.preventDefault()">
+      <label>
+        <span>Username</span>
+        <input
+          type="text"
+          [ngModelOptions]="{ updateOn: 'change' }"
+          [ngModel]="username()"
+          (ngModelChange)="username.set($event)"
+          name="username"
+          autocomplete="username"
+        />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input
+          type="password"
+          [ngModelOptions]="{ updateOn: 'change' }"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          name="password"
+          autocomplete="current-password"
+        />
+      </label>
+
+      @if (errorMessage()) {
+        <div class="error-box">{{ errorMessage() }}</div>
+      }
+
+      <button type="submit" class="login-btn" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Signing in...' : 'Login' }}
+      </button>
+    </form>
+  </div>
+</div>

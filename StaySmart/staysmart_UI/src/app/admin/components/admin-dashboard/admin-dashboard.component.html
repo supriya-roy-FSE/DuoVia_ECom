@@ -1,0 +1,82 @@
+<div class="admin-shell">
+  <aside class="sidebar">
+    <div class="brand-block">
+      <span class="brand-mark">DS</span>
+      <div>
+        <strong>DuoVia</strong>
+        <small>Admin</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/admin/dashboard" class="nav-item active">Dashboard</a>
+      <a routerLink="/admin/orders" class="nav-item">Orders</a>
+      <a routerLink="/admin/reviews" class="nav-item">Reviews</a>
+      <a routerLink="/admin/analytics" class="nav-item">Analytics</a>
+      <button type="button" class="nav-item logout-btn" (click)="logout()">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Overview</p>
+        <h2>Dashboard</h2>
+      </div>
+    </header>
+
+    <section class="stats-grid">
+      <article class="stat-card accent">
+        <span>Total revenue</span>
+        <strong>₹{{ totalRevenue() | number }}</strong>
+      </article>
+      <article class="stat-card">
+        <span>Orders</span>
+        <strong>{{ orders.length }}</strong>
+      </article>
+      <article class="stat-card">
+        <span>Pending reviews</span>
+        <strong>{{ pendingReviews() }}</strong>
+      </article>
+      <article class="stat-card">
+        <span>Approved reviews</span>
+        <strong>{{ approvedReviews() }}</strong>
+      </article>
+      <article class="stat-card">
+        <span>Delivered</span>
+        <strong>{{ deliveredOrders() }}</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h3>Recent orders</h3>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Items</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of recentOrders; track order.orderUniqueId) {
+              <tr>
+                <td>{{ order.orderUniqueId }}</td>
+                <td>{{ order.customerName }}</td>
+                <td><span class="status-pill">{{ order.status }}</span></td>
+                <td>{{ order.itemCount }}</td>
+                <td>₹{{ order.totalAmount }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>

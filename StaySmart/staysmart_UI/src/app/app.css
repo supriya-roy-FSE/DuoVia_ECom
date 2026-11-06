@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #e5e7eb;
+  padding: 12px;
+}
+
+:host > app-header,
+:host > main {
+  display: block;
+  background: #f3f4f6;
+  border: 1px solid #cfcfcf;
+  border-radius: 12px;
+}
+
+.main {
+  min-height: calc(100vh - 120px);
+  padding: 0;
+  overflow: hidden;
+}
+
+app-header {
+  border-bottom: 1px solid #d1d5db;
+  border-radius: 12px 12px 0 0;
+}
+
+router-outlet + * {
+  display: block;
+}

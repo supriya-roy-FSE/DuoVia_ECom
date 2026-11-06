@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { ProductListingComponent } from './components/product-listing/product-listing.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { adminRoutes } from './admin/admin.routes';
 
 export const routes: Routes = [
 	{
@@ -16,6 +17,7 @@ export const routes: Routes = [
 		path: 'products/:category/:productId',
 		component: ProductDetailComponent
 	},
+	...adminRoutes,
 	{
 		path: '**',
 		redirectTo: ''

@@ -1,0 +1,80 @@
+<div class="admin-shell">
+  <aside class="sidebar">
+    <div class="brand-block">
+      <span class="brand-mark">DS</span>
+      <div>
+        <strong>DuoVia</strong>
+        <small>Admin</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/admin/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/admin/orders" class="nav-item">Orders</a>
+      <a routerLink="/admin/reviews" class="nav-item active">Reviews</a>
+      <a routerLink="/admin/analytics" class="nav-item">Analytics</a>
+      <button type="button" class="nav-item logout-btn" (click)="logout()">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Content</p>
+        <h2>Customer reviews</h2>
+      </div>
+    </header>
+
+    <section class="toolbar">
+      <input
+        type="search"
+        placeholder="Search by customer, product or review text"
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+      />
+
+      <select [value]="filter()" (change)="filter.set($any($event.target).value)">
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status === 'all' ? 'All statuses' : status }}</option>
+        }
+      </select>
+    </section>
+
+    <section class="review-list">
+      @for (review of filteredReviews(); track review.reviewId) {
+        <article class="review-card">
+          <img [src]="review.photoUrl" [alt]="review.customerName + ' review photo'" class="review-image" />
+
+          <div class="review-details">
+            <div class="review-header-row">
+              <div>
+                <h3>{{ review.customerName }}</h3>
+                <p>{{ review.productName }} • {{ review.productCategory }}</p>
+              </div>
+              <span class="status-pill" [class.pending]="review.status === 'pending'" [class.approved]="review.status === 'approved'" [class.rejected]="review.status === 'rejected'">
+                {{ review.status }}
+              </span>
+            </div>
+
+            <div class="meta-row">
+              <span>Rating: {{ review.rating }}/5</span>
+              <span>Size: {{ review.size }}</span>
+              <span>{{ review.submittedAt | date:'mediumDate' }}</span>
+            </div>
+
+            <p class="review-text">{{ review.reviewText }}</p>
+
+            @if (review.discountCode) {
+              <div class="discount-tag">Code: {{ review.discountCode }}</div>
+            }
+
+            <div class="actions">
+              <button type="button" class="approve-btn" (click)="approve(review)">Approve</button>
+              <button type="button" class="reject-btn" (click)="reject(review)">Reject</button>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  </main>
+</div>

@@ -11,7 +11,8 @@
             <div class="slide-overlay" [style.background]="slide.bgColor"></div>
             <div class="slide-content">
               <h1 class="slide-title">{{ slide.title }}</h1>
-              <p class="slide-subtitle">{{ slide.subtitle }}</p>
+              <p class="slide-subtitle slide-subtitle-1">{{ slide.subtitle1 }}</p>
+              <p class="slide-subtitle slide-subtitle-2">{{ slide.subtitle2 }}</p>
             </div>
           </div>
         }
@@ -66,6 +67,61 @@
     </div>
   </section>
 
+  <!-- Feedback Promo Section -->
+  <section class="feedback-promo">
+    <div class="feedback-banner">
+      <div class="feedback-copy">
+        <span class="promo-kicker">Member rewards</span>
+        <h2>Share your fit. Earn your next discount.</h2>
+        <p>Upload a real photo and your honest review. Approved reviews unlock a 5% discount on your next order.</p>
+      </div>
+      <button class="feedback-cta" type="button" (click)="openReviewForm()">Share your feedback</button>
+    </div>
+  </section>
+
+  <!-- Review Showcase Section -->
+  <section class="review-showcase">
+    <div class="review-header">
+      <div>
+        <span class="promo-kicker">Customer love</span>
+        <h2>Real stories from real shoppers</h2>
+      </div>
+
+      <div class="slider-controls" aria-label="Review slider controls">
+        <button type="button" class="slider-btn" (click)="prevReview()" aria-label="Previous review">←</button>
+        <button type="button" class="slider-btn" (click)="nextReview()" aria-label="Next review">→</button>
+      </div>
+    </div>
+
+    <div class="review-grid">
+      @for (review of visibleReviews(); track review.reviewId) {
+        <article class="review-card">
+          <img class="review-photo" [src]="review.photoUrl" [alt]="review.customerName + ' wearing ' + review.productName" />
+
+          <div class="review-body">
+            <div class="review-meta">
+              <div class="avatar">{{ review.customerName.charAt(0) }}</div>
+              <div>
+                <strong>{{ review.customerName }}</strong>
+                <span>{{ review.productName }}</span>
+              </div>
+            </div>
+
+            <div class="stars" aria-label="Rated 5 out of 5">
+              @for (star of [1,2,3,4,5]; track star) {
+                <span>★</span>
+              }
+            </div>
+
+            <p class="review-text">{{ review.reviewText }}</p>
+
+            <div class="reward-pill">Verified purchase • 5% discount</div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
   <!-- Featured Section -->
   <section class="featured-section">
     <div class="featured-container">
@@ -74,9 +130,114 @@
         <div class="banner-content">
           <h3>New Arrivals</h3>
           <p>Check out our latest DTF designs</p>
-          <button class="featured-cta-btn">Explore All</button>
+          <button class="featured-cta-btn" type="button" (click)="selectCategory('women')">Explore All</button>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Review Form Modal -->
+  @if (reviewFormOpen()) {
+    <div class="modal-overlay" (click)="closeReviewForm()">
+      <div class="review-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div>
+            <span class="promo-kicker">Review & reward</span>
+            <h3>Share your fit</h3>
+          </div>
+          <button class="close-btn" type="button" (click)="closeReviewForm()" aria-label="Close review form">×</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Name</span>
+            <input type="text" [value]="reviewForm().customerName" (input)="updateReviewField('customerName', $any($event.target).value)" />
+          </label>
+
+          <label>
+            <span>Email</span>
+            <input type="email" [value]="reviewForm().email" (input)="updateReviewField('email', $any($event.target).value)" />
+          </label>
+
+          <label>
+            <span>Mobile</span>
+            <input type="tel" [value]="reviewForm().mobile" (input)="updateReviewField('mobile', $any($event.target).value)" />
+          </label>
+
+          <label>
+            <span>Product</span>
+            <select [value]="reviewForm().productId" (change)="updateReviewField('productId', $any($event.target).value)">
+              <option value="TS-MEN-001">Classic Black Crew Neck</option>
+              <option value="TS-WOM-003">Empowerment Graphic Tee</option>
+              <option value="TS-KID-002">Adventure Animal Prints</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Size</span>
+            <select [value]="reviewForm().size" (change)="updateReviewField('size', $any($event.target).value)">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Rating</span>
+            <div class="rating-selector">
+              @for (star of [1,2,3,4,5]; track star) {
+                <button
+                  type="button"
+                  class="star-btn"
+                  [class.selected]="star <= reviewForm().rating"
+                  (click)="onRatingSelect(star)"
+                  aria-label="Rate {{ star }} star"
+                >★</button>
+              }
+            </div>
+          </label>
+        </div>
+
+        <label class="full-width">
+          <span>Your review</span>
+          <textarea rows="5" [value]="reviewForm().reviewText" (input)="updateReviewField('reviewText', $any($event.target).value)"></textarea>
+        </label>
+
+        <label class="full-width">
+          <span>Upload your photo</span>
+          <div class="upload-box">
+            <input
+              id="review-photo-upload"
+              type="file"
+              accept="image/*"
+              (change)="onPhotoSelected($event)"
+            />
+            <label class="browse-btn" for="review-photo-upload">Browse</label>
+            <span class="file-name">{{ selectedPhotoName() }}</span>
+          </div>
+        </label>
+
+        @if (reviewForm().photoUrl) {
+          <div class="photo-preview-wrap">
+            <img class="photo-preview" [src]="reviewForm().photoUrl" alt="Selected review preview" />
+            <button type="button" class="remove-photo-btn" (click)="clearPhotoSelection()">Remove</button>
+          </div>
+        }
+
+        @if (reviewMessage()) {
+          <div class="review-message" [class.success]="reviewSubmitted()">
+            {{ reviewMessage() }}
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button class="cancel-btn" type="button" (click)="closeReviewForm()">Cancel</button>
+          <button class="submit-btn" type="button" (click)="submitReview()" [disabled]="submittingReview()">
+            {{ submittingReview() ? 'Submitting...' : 'Submit review' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

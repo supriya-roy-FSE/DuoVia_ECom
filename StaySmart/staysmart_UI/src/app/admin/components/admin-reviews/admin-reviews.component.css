@@ -1,0 +1,258 @@
+:host {
+  display: block;
+  min-height: calc(100vh - 120px);
+  background: #f3f4f6;
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: calc(100vh - 120px);
+}
+
+.sidebar {
+  background: #111827;
+  color: #fff;
+  padding: 1.5rem 1rem;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem 0.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f5c76a, #d89b52);
+  color: #111827;
+  font-weight: 800;
+}
+
+.brand-block strong,
+.brand-block small {
+  display: block;
+}
+
+.brand-block small {
+  opacity: 0.7;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.8rem 0.9rem;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.logout-btn {
+  margin-top: 1rem;
+}
+
+.content {
+  padding: 2rem;
+}
+
+.topbar {
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  color: #935a11;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.topbar h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.toolbar input,
+.toolbar select {
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  background: #fff;
+}
+
+.toolbar input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.review-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.review-card {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 39, 0.06);
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+}
+
+.review-image {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+
+.review-details {
+  padding: 1rem 1.2rem;
+}
+
+.review-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-header-row h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.2rem;
+}
+
+.review-header-row p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.meta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #4b5563;
+  font-size: 0.82rem;
+  margin-bottom: 0.8rem;
+}
+
+.review-text {
+  margin: 0 0 0.9rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-pill.pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #8b5d1a;
+}
+
+.status-pill.approved {
+  background: rgba(34, 197, 94, 0.12);
+  color: #166534;
+}
+
+.status-pill.rejected {
+  background: rgba(239, 68, 68, 0.1);
+  color: #991b1b;
+}
+
+.discount-tag {
+  display: inline-block;
+  margin-bottom: 1rem;
+  background: rgba(245, 158, 11, 0.12);
+  color: #7a4d08;
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.approve-btn,
+.reject-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.approve-btn {
+  background: #16a34a;
+  color: #fff;
+}
+
+.reject-btn {
+  background: #ef4444;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    padding-bottom: 0.75rem;
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .review-card {
+    grid-template-columns: 1fr;
+  }
+}

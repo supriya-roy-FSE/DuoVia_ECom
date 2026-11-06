@@ -10,10 +10,19 @@ import {
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TShirtProduct, Size, UserSession, OrderInquiry, OrderInquiryResponse } from '../../models/tshirt.model';
+import {
+  TShirtProduct,
+  Size,
+  UserSession,
+  OrderInquiry,
+  OrderInquiryResponse,
+  ProductSelectionItem,
+  OrderCheckoutPayload
+} from '../../models/tshirt.model';
 import { WishlistService } from '../../services/wishlist.service';
 import { InquiryService } from '../../services/inquiry.service';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -30,6 +39,7 @@ export class ProductDetailComponent implements OnInit {
   private readonly wishlistService = inject(WishlistService);
   private readonly inquiryService = inject(InquiryService);
   private readonly productService = inject(ProductService);
+  private readonly cartService = inject(CartService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -85,6 +95,8 @@ export class ProductDetailComponent implements OnInit {
   isModalOpen = signal<boolean>(false);
   isSubmitting = signal<boolean>(false);
   submissionResult = signal<{ success: boolean; message: string; referenceCode?: string } | null>(null);
+  cartCount = computed(() => this.cartService.getCartCount());
+  isCartAdded = computed(() => this.cartService.getCartItems().some(item => item.productId === this.product().id && item.size === this.selectedSize()));
 
   // User session (mock data - in production, fetch from auth service)
   userSession = signal<UserSession>({
@@ -103,11 +115,15 @@ export class ProductDetailComponent implements OnInit {
   });
 
   isCurrentProductWishlisted = computed(() => {
-    return this.wishlistService.isWishlisted(this.product().id);
+    return this.wishlistService.isWishlisted(this.product().id, this.selectedSize());
   });
 
   wishlistButtonLabel = computed(() => {
     return this.isCurrentProductWishlisted() ? '💖 WISHLISTED' : '♡ WISHLIST';
+  });
+
+  cartButtonLabel = computed(() => {
+    return this.isCartAdded() ? '✅ ADDED TO CART' : '🛒 ADD TO CART';
   });
 
   getCurrentThumbnailIndex = computed(() => this.selectedImageIndex());
@@ -134,6 +150,7 @@ export class ProductDetailComponent implements OnInit {
         if (found) {
           this.product.set(found);
           this.selectedImageIndex.set(0);
+          this.selectedSize.set(found.sizeOptions[0] ?? 'M');
         } else {
           // Product not found — redirect back to listing
           this.router.navigate(['/products', cat]);
@@ -164,7 +181,29 @@ export class ProductDetailComponent implements OnInit {
    * Toggle wishlist status for current product
    */
   toggleWishlist(): void {
-    this.wishlistService.toggleWishlist(this.product().id);
+    const saved = this.wishlistService.toggleWishlist(this.product(), this.selectedSize(), this.currentImageUrl());
+    if (saved) {
+      this.submissionResult.set({
+        success: true,
+        message: `${this.product().name} was added to wishlist.`
+      });
+    } else {
+      this.submissionResult.set({
+        success: false,
+        message: `${this.product().name} was removed from wishlist.`
+      });
+    }
+  }
+
+  /**
+   * Add current product and selected options to cart
+   */
+  addToCart(): void {
+    this.cartService.addToCart(this.product(), this.selectedSize(), this.currentImageUrl());
+    this.submissionResult.set({
+      success: true,
+      message: `${this.product().name} (${this.selectedSize()}) was added to cart.`
+    });
   }
 
   /**
@@ -225,6 +264,52 @@ export class ProductDetailComponent implements OnInit {
           message: 'Failed to submit inquiry. Please try again later.'
         });
         console.error('Inquiry submission error:', error);
+      }
+    });
+  }
+
+  /**
+   * Place an order using the current cart contents
+   */
+  placeOrderFromCart(): void {
+    const payload = this.cartService.createCheckoutPayload(
+      this.userSession().name,
+      this.userSession().phone,
+      this.userSession().email
+    );
+
+    if (!payload.rows.length) {
+      this.submissionResult.set({
+        success: false,
+        message: 'Your cart is empty. Add an item before checkout.'
+      });
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.cartService.submitCheckout(payload).subscribe({
+      next: response => {
+        this.isSubmitting.set(false);
+        this.submissionResult.set({
+          success: response.success,
+          message: response.success
+            ? `Checkout sent to sheet. Order ID: ${payload.orderUniqueId}`
+            : response.message,
+          referenceCode: response.referenceCode
+        });
+
+        if (response.success) {
+          this.cartService.clearCart();
+          setTimeout(() => this.closeInquiryModal(), 3000);
+        }
+      },
+      error: error => {
+        this.isSubmitting.set(false);
+        this.submissionResult.set({
+          success: false,
+          message: 'Checkout failed. Please try again.'
+        });
+        console.error('Checkout error:', error);
       }
     });
   }
