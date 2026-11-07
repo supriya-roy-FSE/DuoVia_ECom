@@ -3,7 +3,7 @@
 This project is split into two main parts:
 
 - `staysmart_UI/` — Angular frontend application
-- `staysmart_backend/stay_smart/` — Spring Boot backend application
+- `staysmart_backend/` — Spring Boot backend application
 
 ---
 
@@ -31,22 +31,21 @@ StaySmart/
 │   └── public/
 │
 └── staysmart_backend/
-    └── stay_smart/
-        ├── pom.xml
-        ├── mvnw
-        ├── mvnw.cmd
-        └── src/
-            ├── main/
-            │   ├── java/com/staysmart/stay_smart/
-            │   │   ├── config/
-            │   │   ├── controller/
-            │   │   ├── dto/
-            │   │   ├── service/
-            │   │   └── StaySmartApplication.java
-            │   └── resources/
-            │       ├── application.properties
-            │       └── static/
-            └── test/
+    ├── pom.xml
+    ├── mvnw
+    ├── mvnw.cmd
+    └── src/
+        ├── main/
+        │   ├── java/com/staysmart/stay_smart/
+        │   │   ├── config/
+        │   │   ├── controller/
+        │   │   ├── dto/
+        │   │   ├── service/
+        │   │   └── StaySmartApplication.java
+        │   └── resources/
+        │       ├── application.properties
+        │       └── static/
+        └── test/
 ```
 
 ---
@@ -108,7 +107,7 @@ This configures app-level providers, including Angular HTTP support.
 
 ---
 
-## 3. Backend: `staysmart_backend/stay_smart`
+## 3. Backend: `staysmart_backend`
 
 This is the Spring Boot backend app that exposes APIs and can later be used to serve the Angular UI.
 
@@ -225,9 +224,8 @@ npm start
 ### Backend
 
 ```bash
-cd E:\Supriya_projects\DuoVia_ECom\StaySmart\staysmart_backend\stay_smart
-.
-\mvnw.cmd spring-boot:run
+cd E:\Supriya_projects\DuoVia_ECom\StaySmart\staysmart_backend
+./mvnw spring-boot:run
 ```
 
 > Note: If Maven cannot resolve dependencies due to Java certificate issues, the local environment needs certificate trust configuration before the Spring Boot app can run.
@@ -250,7 +248,7 @@ This keeps the app as a single deployable service later while still keeping fron
 ## 9. Summary
 
 - `staysmart_UI` = frontend experience
-- `staysmart_backend/stay_smart` = backend API and deployment host
+- `staysmart_backend` = backend API and deployment host
 - both are connected by HTTP API calls
 - the admin section is protected and designed to become full business operations later
 

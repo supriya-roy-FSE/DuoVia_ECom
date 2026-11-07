@@ -13,14 +13,7 @@ import { OrderInquiry, OrderInquiryResponse } from '../models/tshirt.model';
 })
 export class InquiryService {
   private readonly http = inject(HttpClient);
-  
-  /**
-   * Replace with your actual Google Apps Script webhook URL
-   * Format: https://script.google.com/macros/d/{SCRIPT_ID}/usercallback
-   */
-  private readonly WEBHOOK_URL = 'https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercallback';
-
-  constructor() {}
+  private readonly baseUrl = 'http://localhost:8080/api';
 
   /**
    * Submit an order inquiry to the webhook and Google Sheets
@@ -34,7 +27,7 @@ export class InquiryService {
       timestamp: new Date().toISOString()
     };
 
-    return this.http.post<OrderInquiryResponse>(this.WEBHOOK_URL, payload).pipe(
+    return this.http.post<OrderInquiryResponse>(`${this.baseUrl}/inquiries`, payload).pipe(
       map(response => ({
         ...response,
         timestamp: new Date().toISOString()
@@ -69,7 +62,7 @@ export class InquiryService {
    * @returns Observable indicating webhook availability
    */
   checkWebhookStatus(): Observable<boolean> {
-    return this.http.get<{ status: string }>(this.WEBHOOK_URL).pipe(
+    return this.http.get<{ status: string }>(`${this.baseUrl}/health`).pipe(
       map(() => true),
       catchError(() => of(false))
     );

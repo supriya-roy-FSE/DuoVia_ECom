@@ -431,6 +431,23 @@
   text-transform: uppercase;
 }
 
+.review-header .promo-kicker {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: #b76d14;
+  background: rgba(245, 177, 94, 0.12);
+  border: 1px solid rgba(245, 177, 94, 0.3);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.review-header h2 {
+  font-size: clamp(2.1rem, 2.6vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+}
+
 .feedback-copy h2,
 .review-header h2 {
   margin: 0 0 0.8rem;
@@ -580,20 +597,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.75rem;
   z-index: 1000;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .review-modal {
   width: min(680px, 100%);
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 1rem);
   background: #fffdf9;
   border-radius: 24px;
   border: 1px solid rgba(17, 24, 39, 0.08);
   box-shadow: 0 24px 60px rgba(17, 24, 39, 0.16);
-  padding: 1.2rem;
+  padding: 1rem;
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.review-modal::-webkit-scrollbar {
+  display: none;
 }
 
 .modal-header {
@@ -601,13 +625,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
 }
 
 .modal-header h3 {
   margin: 0;
   color: var(--text);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 .close-btn {
@@ -621,13 +645,13 @@
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.75rem 1rem;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.35rem;
   color: var(--text);
   font-weight: 600;
 }
@@ -645,14 +669,19 @@ textarea {
   width: 100%;
   border: 1px solid rgba(17, 24, 39, 0.15);
   border-radius: 12px;
-  padding: 0.8rem 0.9rem;
+  padding: 0.7rem 0.85rem;
   background: #fff;
   font: inherit;
   resize: vertical;
 }
 
+textarea {
+  min-height: 72px;
+  max-height: 110px;
+}
+
 .full-width {
-  margin-top: 1rem;
+  margin-top: 0.7rem;
 }
 
 .rating-selector {
@@ -675,8 +704,8 @@ textarea {
 }
 
 .review-message {
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
+  margin-top: 0.75rem;
+  padding: 0.7rem 0.85rem;
   border-radius: 10px;
   background: rgba(239, 68, 68, 0.08);
   color: #a12828;
@@ -693,7 +722,7 @@ textarea {
   display: flex;
   justify-content: flex-end;
   gap: 0.8rem;
-  margin-top: 1.2rem;
+  margin-top: 0.9rem;
 }
 
 .cancel-btn {
@@ -754,7 +783,7 @@ textarea {
   gap: 0.75rem;
   border: 1px solid rgba(17, 24, 39, 0.15);
   border-radius: 12px;
-  padding: 0.6rem 0.75rem;
+  padding: 0.5rem 0.7rem;
   background: #fff;
 }
 
@@ -788,15 +817,15 @@ textarea {
 }
 
 .photo-preview-wrap {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
 .photo-preview {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 12px;
   border: 1px solid rgba(17, 24, 39, 0.1);

@@ -53,7 +53,7 @@ export class HomeComponent {
     size: 'M',
     rating: 5,
     reviewText: '',
-    photoUrl: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=900&q=80'
+    photoUrl: ''
   });
 
   reviewIndex = signal(0);
@@ -212,7 +212,7 @@ export class HomeComponent {
     this.selectedPhotoName.set('No file selected');
     this.reviewForm.update(current => ({
       ...current,
-      photoUrl: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=900&q=80'
+      photoUrl: ''
     }));
   }
 
@@ -242,7 +242,7 @@ export class HomeComponent {
             size: 'M',
             rating: 5,
             reviewText: '',
-            photoUrl: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=900&q=80'
+            photoUrl: ''
           });
           setTimeout(() => this.closeReviewForm(), 2200);
         } else {

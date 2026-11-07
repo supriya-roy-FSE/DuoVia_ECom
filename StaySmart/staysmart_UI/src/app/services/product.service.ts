@@ -11,6 +11,7 @@ export type Category = 'men' | 'women' | 'kids';
 })
 export class ProductService {
   private readonly http = inject(HttpClient);
+  private readonly baseUrl = 'http://localhost:8080/api';
 
   private readonly catalog = signal<Record<Category, TShirtProduct[]>>({
     men: [

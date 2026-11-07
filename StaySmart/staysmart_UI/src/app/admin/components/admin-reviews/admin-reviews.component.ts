@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AdminAuthService } from '../../services/admin-auth.service';
 import { AdminDataService } from '../../services/admin-data.service';
 import { AdminReview } from '../../models/admin.models';
@@ -7,7 +8,7 @@ import { AdminReview } from '../../models/admin.models';
 @Component({
   selector: 'app-admin-reviews',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './admin-reviews.component.html',
   styleUrl: './admin-reviews.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

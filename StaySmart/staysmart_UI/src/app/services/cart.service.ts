@@ -18,8 +18,9 @@ import {
 })
 export class CartService {
   private readonly http = inject(HttpClient);
+  private readonly baseUrl = 'http://localhost:8080/api';
   private readonly STORAGE_KEY = 'duovia_cart_items';
-  private readonly ORDER_WEBHOOK_URL = 'https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercallback';
+  private readonly ORDER_WEBHOOK_URL = `${this.baseUrl}/orders`;
 
   readonly cartItems = signal<ProductSelectionItem[]>(this.loadFromStorage());
 

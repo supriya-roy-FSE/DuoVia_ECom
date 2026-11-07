@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AdminAuthService } from '../../services/admin-auth.service';
 import { AdminDataService } from '../../services/admin-data.service';
 
 @Component({
   selector: 'app-admin-analytics',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './admin-analytics.component.html',
   styleUrl: './admin-analytics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

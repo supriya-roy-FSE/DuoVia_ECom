@@ -9,7 +9,7 @@ import { CustomerReview, ReviewSubmission, ReviewSubmissionResponse } from '../m
 })
 export class ReviewService {
   private readonly http = inject(HttpClient);
-  private readonly WEBHOOK_URL = 'https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercallback';
+  private readonly baseUrl = 'http://localhost:8080/api';
 
   submitReview(review: ReviewSubmission): Observable<ReviewSubmissionResponse> {
     const payload = {
@@ -18,7 +18,7 @@ export class ReviewService {
       status: 'pending'
     };
 
-    return this.http.post<ReviewSubmissionResponse>(this.WEBHOOK_URL, payload).pipe(
+    return this.http.post<ReviewSubmissionResponse>(`${this.baseUrl}/reviews`, payload).pipe(
       map(response => ({
         ...response,
         reviewId: response.reviewId || `REV-${Date.now()}`

@@ -18,10 +18,10 @@ export interface AdminLoginResponse {
 })
 export class AdminApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8081/api/admin';
+  private readonly baseUrl = 'http://localhost:8080/api';
 
   login(username: string, password: string): Observable<AdminLoginResponse> {
-    return this.http.post<AdminLoginResponse>(`${this.baseUrl}/login`, {
+    return this.http.post<AdminLoginResponse>(`${this.baseUrl}/admin/login`, {
       username,
       password
     });
