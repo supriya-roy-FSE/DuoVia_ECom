@@ -1,7 +1,9 @@
-import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { WishlistService } from '../../services/wishlist.service';
+import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 
 /**
  * Global site header
@@ -18,13 +20,22 @@ import { WishlistService } from '../../services/wishlist.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
+  private readonly router = inject(Router);
+  private readonly wishlistService = inject(WishlistService);
+  private readonly cartService = inject(CartService);
+  private readonly authService = inject(AuthService);
+
   readonly logoPath = 'data/resources/Image/logo/Duovia_Styles_logo.jpg';
-
   readonly wishlistCount = computed(() => this.wishlistService.wishlisted().length);
-
-  constructor(private router: Router, private wishlistService: WishlistService) {}
+  readonly cartCount = computed(() => this.cartService.getCartCount());
+  readonly currentUser = this.authService.currentUser;
 
   goHome(): void {
+    this.router.navigate(['/']);
+  }
+
+  logout(): void {
+    this.authService.logout();
     this.router.navigate(['/']);
   }
 }

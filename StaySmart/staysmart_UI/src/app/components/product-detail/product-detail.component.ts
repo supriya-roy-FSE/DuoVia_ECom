@@ -23,6 +23,7 @@ import { WishlistService } from '../../services/wishlist.service';
 import { InquiryService } from '../../services/inquiry.service';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -40,6 +41,7 @@ export class ProductDetailComponent implements OnInit {
   private readonly inquiryService = inject(InquiryService);
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
+  private readonly authService = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -100,6 +102,7 @@ export class ProductDetailComponent implements OnInit {
 
   // User session (mock data - in production, fetch from auth service)
   userSession = signal<UserSession>({
+    userId: 'guest-user',
     name: 'Supriya Roy',
     email: 'customer@example.com',
     phone: '+91 98300XXXXX'
@@ -199,6 +202,15 @@ export class ProductDetailComponent implements OnInit {
    * Add current product and selected options to cart
    */
   addToCart(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.submissionResult.set({
+        success: false,
+        message: 'Please login first to add this item to your cart.'
+      });
+      setTimeout(() => this.router.navigate(['/login']), 800);
+      return;
+    }
+
     this.cartService.addToCart(this.product(), this.selectedSize(), this.currentImageUrl());
     this.submissionResult.set({
       success: true,
@@ -272,6 +284,9 @@ export class ProductDetailComponent implements OnInit {
    * Place an order using the current cart contents
    */
   placeOrderFromCart(): void {
+    this.isModalOpen.set(true);
+    this.submissionResult.set(null);
+
     const payload = this.cartService.createCheckoutPayload(
       this.userSession().name,
       this.userSession().phone,
@@ -290,24 +305,27 @@ export class ProductDetailComponent implements OnInit {
     this.cartService.submitCheckout(payload).subscribe({
       next: response => {
         this.isSubmitting.set(false);
+        const success = Boolean(response?.success);
+        const orderId = response?.orderId ?? null;
+        const message = response?.message ?? (success ? 'Order placed successfully.' : 'We could not place your order right now.');
+
         this.submissionResult.set({
-          success: response.success,
-          message: response.success
-            ? `Checkout sent to sheet. Order ID: ${payload.orderUniqueId}`
-            : response.message,
-          referenceCode: response.referenceCode
+          success,
+          message: success && orderId ? `${message} Order ID: ${orderId}` : message,
+          referenceCode: orderId ?? undefined
         });
 
-        if (response.success) {
+        if (success) {
           this.cartService.clearCart();
           setTimeout(() => this.closeInquiryModal(), 3000);
         }
       },
       error: error => {
         this.isSubmitting.set(false);
+        const message = error?.error?.message ?? 'We could not place your order right now. Please try again later.';
         this.submissionResult.set({
           success: false,
-          message: 'Checkout failed. Please try again.'
+          message: message
         });
         console.error('Checkout error:', error);
       }

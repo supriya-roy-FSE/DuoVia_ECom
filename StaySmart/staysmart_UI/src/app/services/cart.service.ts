@@ -5,12 +5,12 @@ import { catchError, map } from 'rxjs/operators';
 import {
   OrderCheckoutPayload,
   OrderEntryType,
-  OrderInquiryResponse,
   ProductSelectionItem,
   ProductCategory,
   Size,
   TShirtProduct,
-  OrderSheetRow
+  OrderSheetRow,
+  CheckoutResponse
 } from '../models/tshirt.model';
 
 @Injectable({
@@ -18,7 +18,7 @@ import {
 })
 export class CartService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = 'http://localhost:8081/api';
   private readonly STORAGE_KEY = 'duovia_cart_items';
   private readonly ORDER_WEBHOOK_URL = `${this.baseUrl}/orders`;
 
@@ -32,6 +32,7 @@ export class CartService {
       category: (product.category ?? 'men') as ProductCategory,
       size,
       imageUrl,
+      unitPrice: product.basePrice,
       quantity: 1,
       orderType: 'cart',
       addedAt: new Date().toISOString()
@@ -90,12 +91,14 @@ export class CartService {
   }
 
   createCheckoutPayload(customerName: string, mobile: string, email: string): OrderCheckoutPayload {
-    const rows: OrderSheetRow[] = this.cartItems().map(item => ({
+    const items = this.cartItems();
+    const totalPrice = items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    const rows: OrderSheetRow[] = items.map(item => ({
       customerName,
       mobile,
       email,
       orderType: 'checkout',
-      itemCount: this.cartItems().length,
+      itemCount: items.length,
       orderUniqueId: this.generateOrderId(),
       itemUniqueId: item.itemUniqueId,
       productId: item.productId,
@@ -103,6 +106,9 @@ export class CartService {
       category: item.category,
       size: item.size,
       imageUrl: item.imageUrl,
+      unitPrice: item.unitPrice,
+      quantity: item.quantity,
+      totalPrice: item.unitPrice * item.quantity,
       orderedAt: new Date().toISOString()
     }));
 
@@ -115,6 +121,7 @@ export class CartService {
       orderType: 'checkout',
       itemCount: rows.length,
       orderUniqueId,
+      totalPrice,
       rows: rows.map(row => ({
         ...row,
         orderUniqueId,
@@ -124,20 +131,36 @@ export class CartService {
     };
   }
 
-  submitCheckout(payload: OrderCheckoutPayload): Observable<OrderInquiryResponse> {
-    return this.http.post<OrderInquiryResponse>(this.ORDER_WEBHOOK_URL, payload).pipe(
+  submitCheckout(payload: OrderCheckoutPayload): Observable<CheckoutResponse> {
+    const requestBody = {
+      customerName: payload.customerName,
+      email: payload.email,
+      phone: payload.mobile,
+      productName: payload.rows[0]?.productName ?? 'Multi-product order',
+      quantity: payload.rows.reduce((sum, row) => sum + row.quantity, 0),
+      totalPrice: payload.totalPrice,
+      status: 'PENDING'
+    };
+
+    return this.http.post<CheckoutResponse>(this.ORDER_WEBHOOK_URL, requestBody).pipe(
       map(response => ({
         ...response,
-        timestamp: new Date().toISOString()
+        orderId: response.orderId ?? null,
+        message: response.message ?? 'Order placed successfully.'
       })),
       catchError(error => {
         console.error('Checkout submission failed:', error);
+        const message = error?.error?.message ?? 'We could not place your order right now. Please try again later.';
+        const errorCode = error?.error?.errorCode ?? 'CHECKOUT_FAILED';
+        const rootCause = error?.error?.rootCause ?? 'Unknown checkout failure';
         return of({
           success: false,
-          referenceCode: `CHK-${Date.now()}`,
-          message: 'Failed to submit checkout order. Please try again.',
+          orderId: null,
+          message,
+          errorCode,
+          rootCause,
           timestamp: new Date().toISOString()
-        });
+        } as CheckoutResponse & { timestamp: string });
       })
     );
   }

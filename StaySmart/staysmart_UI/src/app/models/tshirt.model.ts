@@ -28,6 +28,7 @@ export interface ProductSelectionItem {
   category: ProductCategory;
   size: Size;
   imageUrl: string;
+  unitPrice: number;
   quantity: number;
   orderType: 'cart' | 'wishlist';
   addedAt: string;
@@ -46,6 +47,9 @@ export interface OrderSheetRow {
   category: ProductCategory;
   size: Size;
   imageUrl: string;
+  unitPrice: number;
+  quantity: number;
+  totalPrice: number;
   orderedAt: string;
 }
 
@@ -56,6 +60,7 @@ export interface OrderCheckoutPayload {
   orderType: OrderEntryType;
   itemCount: number;
   orderUniqueId: string;
+  totalPrice: number;
   rows: OrderSheetRow[];
 }
 
@@ -115,7 +120,76 @@ export interface OrderInquiryResponse {
  * Logged-in user session context
  */
 export interface UserSession {
+  userId: string;
   name: string;
   email: string;
   phone: string;
+  address?: string;
+  status?: string;
+}
+
+export interface UserLoginRequest {
+  userId: string;
+  password: string;
+}
+
+export interface UserRegistrationRequest {
+  userName: string;
+  userEmail: string;
+  phone: string;
+  address: string;
+  userId: string;
+  password: string;
+}
+
+export interface AuthApiResponse {
+  success: boolean;
+  message: string;
+  userId?: string;
+  userEmail?: string;
+  userName?: string;
+}
+
+export interface CustomerOrderRecord {
+  id?: number | string;
+  customerName: string;
+  email: string;
+  phone: string;
+  productName: string;
+  quantity: number;
+  totalPrice: number | string;
+  status: string;
+  createdAt?: string;
+}
+
+export interface LoggedInUser {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  phone: string;
+  address: string;
+  status: string;
+}
+
+export interface UserLoginResponse {
+  success: boolean;
+  message: string;
+  user: LoggedInUser;
+}
+
+export interface UserRegistrationResponse {
+  success: boolean;
+  message: string;
+  userId?: string;
+  userEmail?: string;
+  userName?: string;
+}
+
+export interface CheckoutResponse {
+  success: boolean;
+  orderId?: string | null;
+  message: string;
+  errorCode?: string | null;
+  rootCause?: string | null;
+  timestamp?: string;
 }

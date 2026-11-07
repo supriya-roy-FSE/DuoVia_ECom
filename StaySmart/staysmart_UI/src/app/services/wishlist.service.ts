@@ -63,6 +63,7 @@ export class WishlistService {
       category: (product.category ?? 'men') as ProductCategory,
       size,
       imageUrl,
+      unitPrice: product.basePrice,
       quantity: 1,
       orderType: 'wishlist',
       addedAt: new Date().toISOString()

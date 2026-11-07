@@ -1,0 +1,93 @@
+import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
+import { CustomerOrderRecord } from '../../models/tshirt.model';
+
+@Component({
+  selector: 'app-my-orders',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  template: `
+    <section class="page-shell">
+      <div class="page-head">
+        <h2>My Orders</h2>
+        <a routerLink="/" class="link-btn">Back to home</a>
+      </div>
+
+      @if (!authService.isLoggedIn()) {
+        <div class="empty-state">
+          <p>Please log in to view your orders.</p>
+        </div>
+      } @else if (orders().length === 0) {
+        <div class="empty-state">
+          <p>No orders found for this account.</p>
+        </div>
+      } @else {
+        <div class="orders-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of orders(); track order.id ?? order.productName) {
+                <tr>
+                  <td>{{ order.id ?? 'N/A' }}</td>
+                  <td>{{ order.productName }}</td>
+                  <td>{{ order.quantity }}</td>
+                  <td>₹{{ formatAmount(order.totalPrice) }}</td>
+                  <td>{{ order.status }}</td>
+                  <td>{{ order.createdAt ? (order.createdAt | date:'mediumDate') : 'N/A' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  `,
+  styles: [
+    `
+      .page-shell { max-width:1200px; margin:0 auto; padding:32px 20px 50px; }
+      .page-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+      h2 { margin:0; font-size:2rem; }
+      .link-btn { color:#111827; font-weight:700; text-decoration:none; }
+      .empty-state { background:#fff; border:1px solid #eee; border-radius:20px; padding:32px; text-align:center; }
+      .orders-table-wrap { overflow:auto; background:#fff; border:1px solid #eee; border-radius:18px; }
+      table { width:100%; border-collapse:collapse; }
+      th, td { padding:14px 16px; border-bottom:1px solid #e5e7eb; text-align:left; }
+      th { background:#f9fafb; }
+    `
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class MyOrdersComponent {
+  private readonly http = inject(HttpClient);
+  readonly authService = inject(AuthService);
+  readonly orders = signal<CustomerOrderRecord[]>([]);
+
+  constructor() {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.http.get<CustomerOrderRecord[]>(`http://localhost:8081/api/orders`).subscribe({
+        next: (data) => {
+          const filtered = data.filter(order => order.email && user.email && order.email.toLowerCase() === user.email.toLowerCase());
+          this.orders.set(filtered);
+        }
+      });
+    }
+  }
+
+  formatAmount(value: number | string): string {
+    const numericValue = typeof value === 'number' ? value : Number.parseFloat(String(value)) || 0;
+    return numericValue.toLocaleString('en-IN');
+  }
+}
