@@ -9,16 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(
-    origins = {
-        "http://localhost:4200",
-        "http://127.0.0.1:4200",
-        "http://0.0.0.0:4200"
-    },
-    allowedHeaders = "*",
-    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS},
-    allowCredentials = "true"
-)
 public class AdminController {
 
     private static final Logger log = LoggerFactory.getLogger(AdminController.class);

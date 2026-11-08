@@ -1,0 +1,5 @@
+# Created at 2026-11-08T12:40:28.284
+Boot Manifest-JAR contains absolute paths in classpath 'E:\Supriya_projects\DuoVia_ECom\StaySmart\staysmart_backend\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

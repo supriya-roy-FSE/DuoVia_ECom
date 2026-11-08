@@ -1,0 +1,124 @@
+{
+  "products": [
+    {
+      "productName": "Bikers_Delight_1",
+      "id": "TS-MEN-001",
+      "category": "men",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-20",
+      "price": 1499,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Bikers_Delight_1"
+    },
+    {
+      "productName": "Uma_1",
+      "id": "TS-MEN-002",
+      "category": "men",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-21",
+      "price": 1699,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Uma_1"
+    },
+    {
+      "productName": "Uma-2",
+      "id": "TS-MEN-003",
+      "category": "men",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-22",
+      "price": 1899,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Uma-2"
+    },
+    {
+      "productName": "Kolkata",
+      "id": "TS-MEN-004",
+      "category": "men",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-23",
+      "price": 1999,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Kolkata"
+    },
+    {
+      "productName": "Nature",
+      "id": "TS-WOM-001",
+      "category": "women",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-24",
+      "price": 1599,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Nature"
+    },
+    {
+      "productName": "Pwesome_1",
+      "id": "TS-WOM-002",
+      "category": "women",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-25",
+      "price": 1749,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Pwesome_1"
+    },
+    {
+      "productName": "Sanatani_1",
+      "id": "TS-WOM-003",
+      "category": "women",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-26",
+      "price": 2099,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Sanatani_1"
+    },
+    {
+      "productName": "Test Women Tee Delta",
+      "id": "TS-WOM-004",
+      "category": "women",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-27",
+      "price": 2199,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Test Women Tee Delta"
+    },
+    {
+      "productName": "Test Kids Tee Alpha",
+      "id": "TS-KID-001",
+      "category": "kids",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-18",
+      "price": 999,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Test Kids Tee Alpha"
+    },
+    {
+      "productName": "Test Kids Tee Beta",
+      "id": "TS-KID-002",
+      "category": "kids",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-19",
+      "price": 1099,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Test Kids Tee Beta"
+    },
+    {
+      "productName": "Test Kids Tee Gamma",
+      "id": "TS-KID-003",
+      "category": "kids",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-20",
+      "price": 1199,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Test Kids Tee Gamma"
+    },
+    {
+      "productName": "Test Kids Tee Delta",
+      "id": "TS-KID-004",
+      "category": "kids",
+      "size": ["S", "M", "L", "XL", "XXL"],
+      "uploadDate": "2026-08-21",
+      "price": 1299,
+      "priceCurrency": "INR",
+      "imageFolderPath": "/data/resources/Image/Test Kids Tee Delta"
+    }
+  ]
+}
