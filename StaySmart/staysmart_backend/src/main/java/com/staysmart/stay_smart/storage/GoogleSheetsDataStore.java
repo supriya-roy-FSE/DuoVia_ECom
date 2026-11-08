@@ -171,6 +171,62 @@ public class GoogleSheetsDataStore implements DataStore {
         return text;
     }
 
+    private String parseStringCell(List<Object> row, int index) {
+        if (row.size() <= index || row.get(index) == null) {
+            return null;
+        }
+        String value = String.valueOf(row.get(index)).trim();
+        return value.isBlank() ? null : value;
+    }
+
+    private Long parseLongCell(List<Object> row, int index) {
+        String value = parseStringCell(row, index);
+        if (value == null) {
+            return null;
+        }
+        try {
+            return Long.valueOf(value);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    private Integer parseIntegerCell(List<Object> row, int index) {
+        String value = parseStringCell(row, index);
+        if (value == null) {
+            return null;
+        }
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    private BigDecimal parseBigDecimalCell(List<Object> row, int index) {
+        String value = parseStringCell(row, index);
+        if (value == null) {
+            return null;
+        }
+        try {
+            return new BigDecimal(value);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    private LocalDateTime parseDateTimeCell(List<Object> row, int index) {
+        String value = parseStringCell(row, index);
+        if (value == null) {
+            return LocalDateTime.now();
+        }
+        try {
+            return LocalDateTime.parse(value);
+        } catch (Exception ex) {
+            return LocalDateTime.now();
+        }
+    }
+
     @Override
     public OrderEntity saveOrder(OrderEntity order) {
         if (order.getId() == null) {
@@ -221,17 +277,15 @@ public class GoogleSheetsDataStore implements DataStore {
             for (List<Object> row : rows) {
                 if (row == null || row.isEmpty()) continue;
                 OrderEntity order = new OrderEntity();
-                order.setId(row.size() > 0 && row.get(0) != null ? Long.valueOf(String.valueOf(row.get(0))) : null);
-                order.setUserSkSeq(row.size() > 1 && row.get(1) != null ? Long.valueOf(String.valueOf(row.get(1))) : null);
-                order.setEmail(row.size() > 2 && row.get(2) != null ? String.valueOf(row.get(2)) : null);
-                order.setPhone(row.size() > 3 && row.get(3) != null ? String.valueOf(row.get(3)) : null);
-                order.setProductName(row.size() > 4 && row.get(4) != null ? String.valueOf(row.get(4)) : null);
-                order.setQuantity(row.size() > 5 && row.get(5) != null ? Integer.valueOf(String.valueOf(row.get(5))) : null);
-                order.setTotalPrice(row.size() > 6 && row.get(6) != null ? new BigDecimal(String.valueOf(row.get(6))) : null);
-                order.setStatus(row.size() > 7 && row.get(7) != null ? String.valueOf(row.get(7)) : null);
-
-                String createdAt = row.size() > 8 && row.get(8) != null ? String.valueOf(row.get(8)) : null;
-                order.setCreatedAt(createdAt != null ? LocalDateTime.parse(createdAt) : LocalDateTime.now());
+                order.setId(parseLongCell(row, 0));
+                order.setUserSkSeq(parseLongCell(row, 1));
+                order.setEmail(parseStringCell(row, 2));
+                order.setPhone(parseStringCell(row, 3));
+                order.setProductName(parseStringCell(row, 4));
+                order.setQuantity(parseIntegerCell(row, 5));
+                order.setTotalPrice(parseBigDecimalCell(row, 6));
+                order.setStatus(parseStringCell(row, 7));
+                order.setCreatedAt(parseDateTimeCell(row, 8));
                 orders.add(order);
             }
             return orders;

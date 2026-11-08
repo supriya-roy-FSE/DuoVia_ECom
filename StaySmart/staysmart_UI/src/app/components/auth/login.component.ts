@@ -85,7 +85,7 @@ import { UserLoginRequest } from '../../models/tshirt.model';
       <div class="welcome-overlay" aria-live="polite" aria-atomic="true">
         <div class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
           <div class="welcome-icon">🎉</div>
-          <h3 id="welcome-title">Welcome, {{ welcomeUser() }}!</h3>
+          <h3 id="welcome-title">Welcome, {{ welcomeUser() }}  !</h3>
           <p>Your account is ready and you're signed in.</p>
         </div>
       </div>
