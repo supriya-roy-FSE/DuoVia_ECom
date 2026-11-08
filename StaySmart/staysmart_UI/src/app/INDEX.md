@@ -398,7 +398,6 @@ Small:      <480     → Touch-friendly
 ## 🚀 Deployment Platforms
 
 ### Supported Hosting Services
-- **Netlify** → Drag & drop deploy
 - **Vercel** → Git-connected deploy
 - **Firebase Hosting** → Google ecosystem
 - **AWS Amplify** → AWS ecosystem

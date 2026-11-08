@@ -343,7 +343,7 @@ src/app/
 
 ## 🚀 Deployment Ready
 
-### For Netlify/Vercel
+### For Vercel
 
 ```bash
 npm run build
