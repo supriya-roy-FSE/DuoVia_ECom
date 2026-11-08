@@ -15,8 +15,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Repository;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,37 +36,69 @@ public class GoogleSheetsDataStore implements DataStore {
         this.sheetsService = createSheetsService();
     }
 
+
+    
     private Sheets createSheetsService() {
         try {
-            String credentialsLocation = resolveCredentialsLocation();
-            if (credentialsLocation == null || credentialsLocation.isBlank()) {
-                throw new IllegalStateException("staysmart.google-sheet.credentials-file is missing");
-            }
 
-            Resource resource;
-            if (credentialsLocation.startsWith("classpath:")) {
-                resource = new org.springframework.core.io.ClassPathResource(credentialsLocation.substring("classpath:".length()));
+            String credentialsJson = System.getenv("GOOGLE_CREDENTIALS_JSON");
+
+            if (credentialsJson != null && !credentialsJson.isBlank()) {
+                // Render environment
+
+                try (InputStream inputStream = new ByteArrayInputStream(
+                        credentialsJson.getBytes(StandardCharsets.UTF_8))) {
+
+                    GoogleCredentials credentials = GoogleCredentials
+                            .fromStream(inputStream)
+                            .createScoped(
+                                    Collections.singletonList(
+                                            SheetsScopes.SPREADSHEETS));
+
+                    return new Sheets.Builder(
+                            GoogleNetHttpTransport.newTrustedTransport(),
+                            GsonFactory.getDefaultInstance(),
+                            new HttpCredentialsAdapter(credentials))
+                            .setApplicationName("StaySmart")
+                            .build();
+
+                } catch (Exception e) {
+                    throw new IllegalStateException(
+                            "Failed to initialize Google Sheets service from Render", e);
+                }
             } else {
-                String normalized = credentialsLocation;
-                if (normalized.startsWith("file:")) {
-                    resource = new UrlResource(java.net.URI.create(normalized).toURL());
+                // Existing file path logic
+                String credentialsLocation = resolveCredentialsLocation();
+                if (credentialsLocation == null || credentialsLocation.isBlank()) {
+                    throw new IllegalStateException("staysmart.google-sheet.credentials-file is missing");
+                }
+
+                Resource resource;
+                if (credentialsLocation.startsWith("classpath:")) {
+                    resource = new org.springframework.core.io.ClassPathResource(
+                            credentialsLocation.substring("classpath:".length()));
                 } else {
-                    resource = new UrlResource(new java.io.File(normalized).toURI().toURL());
+                    String normalized = credentialsLocation;
+                    if (normalized.startsWith("file:")) {
+                        resource = new UrlResource(java.net.URI.create(normalized).toURL());
+                    } else {
+                        resource = new UrlResource(new java.io.File(normalized).toURI().toURL());
+                    }
+                }
+
+                try (InputStream inputStream = resource.getInputStream()) {
+                    GoogleCredentials credentials = GoogleCredentials.fromStream(inputStream)
+                            .createScoped(Collections.singletonList(SheetsScopes.SPREADSHEETS));
+
+                    return new Sheets.Builder(
+                            GoogleNetHttpTransport.newTrustedTransport(),
+                            GsonFactory.getDefaultInstance(),
+                            new HttpCredentialsAdapter(credentials)).setApplicationName("StaySmart").build();
                 }
             }
-
-            try (InputStream inputStream = resource.getInputStream()) {
-                GoogleCredentials credentials = GoogleCredentials.fromStream(inputStream)
-                        .createScoped(Collections.singletonList(SheetsScopes.SPREADSHEETS));
-
-                return new Sheets.Builder(
-                        GoogleNetHttpTransport.newTrustedTransport(),
-                        GsonFactory.getDefaultInstance(),
-                        new HttpCredentialsAdapter(credentials)
-                ).setApplicationName("StaySmart").build();
-            }
         } catch (Exception e) {
-            throw new IllegalStateException("Failed to initialize Google Sheets service with credentials file: " + properties.getCredentialsFile(), e);
+            throw new IllegalStateException("Failed to initialize Google Sheets service with credentials file: "
+                    + properties.getCredentialsFile(), e);
         }
     }
 
