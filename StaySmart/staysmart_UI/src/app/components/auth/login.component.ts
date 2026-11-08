@@ -80,6 +80,16 @@ import { UserLoginRequest } from '../../models/tshirt.model';
         </div>
       </div>
     </section>
+
+    @if (showWelcomeModal()) {
+      <div class="welcome-overlay" aria-live="polite" aria-atomic="true">
+        <div class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+          <div class="welcome-icon">🎉</div>
+          <h3 id="welcome-title">Welcome, {{ welcomeUser() }}!</h3>
+          <p>Your account is ready and you're signed in.</p>
+        </div>
+      </div>
+    }
   `,
   styles: [
     `
@@ -281,6 +291,56 @@ import { UserLoginRequest } from '../../models/tshirt.model';
         font-weight: 600;
       }
 
+      .welcome-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(17, 24, 39, 0.52);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        padding: 1rem;
+      }
+
+      .welcome-modal {
+        width: min(440px, calc(100vw - 2rem));
+        background: linear-gradient(135deg, #fff7ed 0%, #ecfeff 100%);
+        border: 1px solid rgba(245, 158, 11, 0.45);
+        border-radius: 24px;
+        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+        text-align: center;
+        padding: 2rem 1.5rem 1.5rem;
+        animation: pop-in 0.25s ease-out;
+      }
+
+      .welcome-icon {
+        font-size: 3rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .welcome-modal h3 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+        color: #111827;
+      }
+
+      .welcome-modal p {
+        margin: 0;
+        font-size: 1rem;
+        color: #374151;
+      }
+
+      @keyframes pop-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
       @media (max-width: 860px) {
         .auth-panel {
           grid-template-columns: 1fr;
@@ -306,6 +366,8 @@ export class LoginComponent {
   readonly isSubmitting = signal(false);
   readonly message = signal('');
   readonly isSuccess = signal(true);
+  readonly showWelcomeModal = signal(false);
+  readonly welcomeUser = signal('');
 
   isFormValid(): boolean {
     return !!(
@@ -327,10 +389,16 @@ export class LoginComponent {
     this.authService.login(this.form).subscribe({
       next: response => {
         this.isSubmitting.set(false);
-        if (response.success) {
-          this.message.set('Login successful. Redirecting...');
+        if (response.success && response.user) {
+          const displayName = response.user.userName || response.user.userId || this.form.userId;
+          this.welcomeUser.set(displayName);
+          this.showWelcomeModal.set(true);
+          this.message.set('');
           this.isSuccess.set(true);
-          setTimeout(() => this.router.navigate(['/']), 800);
+          setTimeout(() => {
+            this.showWelcomeModal.set(false);
+            this.router.navigate(['/']);
+          }, 5000);
           return;
         }
 

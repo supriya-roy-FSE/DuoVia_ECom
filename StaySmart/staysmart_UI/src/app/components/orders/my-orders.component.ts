@@ -76,11 +76,14 @@ export class MyOrdersComponent {
 
   constructor() {
     const user = this.authService.getCurrentUser();
-    if (user) {
-      this.http.get<CustomerOrderRecord[]>(`http://localhost:8081/api/orders`).subscribe({
+    const userSkSeq = user?.userSkSeq ?? null;
+    if (userSkSeq != null) {
+      this.http.get<CustomerOrderRecord[]>(`http://localhost:8081/api/orders/user/${encodeURIComponent(String(userSkSeq))}`).subscribe({
         next: (data) => {
-          const filtered = data.filter(order => order.email && user.email && order.email.toLowerCase() === user.email.toLowerCase());
-          this.orders.set(filtered);
+          this.orders.set(data ?? []);
+        },
+        error: () => {
+          this.orders.set([]);
         }
       });
     }

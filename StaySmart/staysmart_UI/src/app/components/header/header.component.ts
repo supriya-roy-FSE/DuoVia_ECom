@@ -29,12 +29,22 @@ export class HeaderComponent {
   readonly wishlistCount = computed(() => this.wishlistService.wishlisted().length);
   readonly cartCount = computed(() => this.cartService.getCartCount());
   readonly currentUser = this.authService.currentUser;
+  userMenuOpen = false;
+
+  toggleUserMenu(): void {
+    this.userMenuOpen = !this.userMenuOpen;
+  }
+
+  closeUserMenu(): void {
+    this.userMenuOpen = false;
+  }
 
   goHome(): void {
     this.router.navigate(['/']);
   }
 
   logout(): void {
+    this.userMenuOpen = false;
     this.authService.logout();
     this.router.navigate(['/']);
   }

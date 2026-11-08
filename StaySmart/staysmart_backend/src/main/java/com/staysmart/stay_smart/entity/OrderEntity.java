@@ -12,7 +12,13 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
+    private Long userSkSeq;
+
+    @Column(nullable = true)
+    private String userId;
+
+    @Column(nullable = true)
     private String customerName;
 
     @Column(nullable = false)
@@ -40,8 +46,10 @@ public class OrderEntity {
         this.createdAt = LocalDateTime.now();
     }
 
-    public OrderEntity(String customerName, String email, String phone, String productName,
-                      Integer quantity, BigDecimal totalPrice, String status) {
+    public OrderEntity(Long userSkSeq, String userId, String customerName, String email, String phone,
+                      String productName, Integer quantity, BigDecimal totalPrice, String status) {
+        this.userSkSeq = userSkSeq;
+        this.userId = userId;
         this.customerName = customerName;
         this.email = email;
         this.phone = phone;
@@ -52,8 +60,24 @@ public class OrderEntity {
         this.createdAt = LocalDateTime.now();
     }
 
+    public OrderEntity(String userId, String customerName, String email, String phone, String productName,
+                      Integer quantity, BigDecimal totalPrice, String status) {
+        this(null, userId, customerName, email, phone, productName, quantity, totalPrice, status);
+    }
+
+    public OrderEntity(String customerName, String email, String phone, String productName,
+                      Integer quantity, BigDecimal totalPrice, String status) {
+        this(null, null, customerName, email, phone, productName, quantity, totalPrice, status);
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Long getUserSkSeq() { return userSkSeq; }
+    public void setUserSkSeq(Long userSkSeq) { this.userSkSeq = userSkSeq; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }

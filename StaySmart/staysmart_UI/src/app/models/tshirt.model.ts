@@ -121,6 +121,7 @@ export interface OrderInquiryResponse {
  */
 export interface UserSession {
   userId: string;
+  userSkSeq?: number | null;
   name: string;
   email: string;
   phone: string;
@@ -141,6 +142,20 @@ export interface UserRegistrationRequest {
   userId: string;
   password: string;
 }
+
+export interface UserSheetRegistrationRow {
+  ID: string;
+  User_Name: string;
+  User_Email: string;
+  Phone: string;
+  Address: string;
+  UserId: string;
+  Password: string;
+  Status: string;
+  Create_date: string;
+}
+
+export interface UserRegistrationPayload extends UserRegistrationRequest, UserSheetRegistrationRow {}
 
 export interface AuthApiResponse {
   success: boolean;
@@ -164,6 +179,7 @@ export interface CustomerOrderRecord {
 
 export interface LoggedInUser {
   userId: string;
+  userSkSeq?: number | null;
   userName: string;
   userEmail: string;
   phone: string;

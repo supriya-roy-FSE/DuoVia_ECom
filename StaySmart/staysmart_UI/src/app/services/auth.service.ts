@@ -4,6 +4,7 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
 import {
   UserLoginRequest,
   UserLoginResponse,
+  UserRegistrationPayload,
   UserRegistrationRequest,
   UserRegistrationResponse,
   UserSession
@@ -18,7 +19,25 @@ export class AuthService {
   readonly currentUser = signal<UserSession | null>(this.loadSession());
 
   register(request: UserRegistrationRequest): Observable<UserRegistrationResponse> {
-    return this.http.post<UserLoginResponse>(`${this.baseUrl}/register`, request).pipe(
+    const registrationPayload: UserRegistrationPayload = {
+      userName: request.userName.trim(),
+      userEmail: request.userEmail.trim(),
+      phone: request.phone.trim(),
+      address: request.address.trim(),
+      userId: request.userId.trim(),
+      password: request.password,
+      ID: this.generateUniqueRegistrationId(),
+      User_Name: request.userName.trim(),
+      User_Email: request.userEmail.trim(),
+      Phone: request.phone.trim(),
+      Address: request.address.trim(),
+      UserId: request.userId.trim(),
+      Password: request.password,
+      Status: 'ACTIVE',
+      Create_date: new Date().toISOString()
+    };
+
+    return this.http.post<UserLoginResponse>(`${this.baseUrl}/register`, registrationPayload).pipe(
       map(response => ({
         success: response.success,
         message: response.message,
@@ -39,6 +58,7 @@ export class AuthService {
         if (response.success && response.user) {
           const session: UserSession = {
             userId: response.user.userId,
+            userSkSeq: response.user.userSkSeq ?? null,
             name: response.user.userName,
             email: response.user.userEmail,
             phone: response.user.phone,
@@ -88,5 +108,11 @@ export class AuthService {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.sessionKey, JSON.stringify(session));
     }
+  }
+
+  private generateUniqueRegistrationId(): string {
+    const timestampPart = Date.now().toString(36).toUpperCase();
+    const randomPart = Math.random().toString(36).slice(2, 8).toUpperCase();
+    return `USR-${timestampPart}-${randomPart}`;
   }
 }

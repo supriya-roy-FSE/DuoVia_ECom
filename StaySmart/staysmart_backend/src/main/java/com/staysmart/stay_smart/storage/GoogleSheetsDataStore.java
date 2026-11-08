@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,9 +47,9 @@ public class GoogleSheetsDataStore implements DataStore {
             } else {
                 String normalized = credentialsLocation;
                 if (normalized.startsWith("file:")) {
-                    resource = new UrlResource(new URL(normalized));
+                    resource = new UrlResource(java.net.URI.create(normalized).toURL());
                 } else {
-                    resource = new UrlResource(new URL("file:" + normalized));
+                    resource = new UrlResource(new java.io.File(normalized).toURI().toURL());
                 }
             }
 
@@ -90,7 +89,7 @@ public class GoogleSheetsDataStore implements DataStore {
 
     private static final String[] ORDER_COLUMNS = {
             "id",
-            "customerName",
+            "User_sk_seq",
             "email",
             "phone",
             "productName",
@@ -110,20 +109,21 @@ public class GoogleSheetsDataStore implements DataStore {
     };
 
     private static final String[] USER_COLUMNS = {
-            "id",
+            "User_sk_seq",
             "User_Name",
             "User_Email",
             "Phone",
             "Address",
             "UserId",
             "Password",
-            "Status"
+            "Status",
+            "Create_date"
     };
 
     private List<Object> buildOrderRow(OrderEntity order) {
         List<Object> row = new ArrayList<>(ORDER_COLUMNS.length);
         row.add(normalizeCellValue(order.getId()));
-        row.add(normalizeCellValue(order.getCustomerName()));
+        row.add(normalizeCellValue(order.getUserSkSeq()));
         row.add(normalizeCellValue(order.getEmail()));
         row.add(normalizeCellValue(order.getPhone()));
         row.add(normalizeCellValue(order.getProductName()));
@@ -155,6 +155,7 @@ public class GoogleSheetsDataStore implements DataStore {
         row.add(normalizeCellValue(user.getUserId()));
         row.add(normalizeCellValue(user.getPassword()));
         row.add(normalizeCellValue(user.getStatus() == null ? "ACTIVE" : user.getStatus()));
+        row.add(normalizeCellValue(user.getCreateDate() == null ? java.time.LocalDateTime.now().toString() : user.getCreateDate()));
         return row;
     }
 
@@ -180,6 +181,13 @@ public class GoogleSheetsDataStore implements DataStore {
         }
         if (order.getCreatedAt() == null) {
             order.setCreatedAt(LocalDateTime.now());
+        }
+
+        if (order.getUserSkSeq() == null && order.getUserId() != null && !order.getUserId().isBlank()) {
+            UserEntity user = findUserByUserId(order.getUserId());
+            if (user != null && user.getId() != null) {
+                order.setUserSkSeq(user.getId());
+            }
         }
 
         List<Object> row = buildOrderRow(order);
@@ -214,7 +222,7 @@ public class GoogleSheetsDataStore implements DataStore {
                 if (row == null || row.isEmpty()) continue;
                 OrderEntity order = new OrderEntity();
                 order.setId(row.size() > 0 && row.get(0) != null ? Long.valueOf(String.valueOf(row.get(0))) : null);
-                order.setCustomerName(row.size() > 1 && row.get(1) != null ? String.valueOf(row.get(1)) : null);
+                order.setUserSkSeq(row.size() > 1 && row.get(1) != null ? Long.valueOf(String.valueOf(row.get(1))) : null);
                 order.setEmail(row.size() > 2 && row.get(2) != null ? String.valueOf(row.get(2)) : null);
                 order.setPhone(row.size() > 3 && row.get(3) != null ? String.valueOf(row.get(3)) : null);
                 order.setProductName(row.size() > 4 && row.get(4) != null ? String.valueOf(row.get(4)) : null);
@@ -250,7 +258,7 @@ public class GoogleSheetsDataStore implements DataStore {
                 for (OrderEntity item : orders) {
                     rows.add(List.of(
                             item.getId(),
-                            item.getCustomerName(),
+                            item.getUserSkSeq(),
                             item.getEmail(),
                             item.getPhone(),
                             item.getProductName(),
@@ -339,12 +347,15 @@ public class GoogleSheetsDataStore implements DataStore {
         if (user.getStatus() == null || user.getStatus().isBlank()) {
             user.setStatus("ACTIVE");
         }
+        if (user.getCreateDate() == null || user.getCreateDate().isBlank()) {
+            user.setCreateDate(java.time.LocalDateTime.now().toString());
+        }
 
         List<Object> row = buildUserRow(user);
 
         try {
             sheetsService.spreadsheets().values()
-                    .append(properties.getSpreadsheetId(), properties.getUsersSheet() + "!A:H", new ValueRange().setValues(List.of(row)))
+                    .append(properties.getSpreadsheetId(), properties.getUsersSheet() + "!A:I", new ValueRange().setValues(List.of(row)))
                     .setValueInputOption("USER_ENTERED")
                     .setInsertDataOption("INSERT_ROWS")
                     .execute();
@@ -353,6 +364,18 @@ public class GoogleSheetsDataStore implements DataStore {
         }
 
         return user;
+    }
+
+    @Override
+    public UserEntity findUserByUserSkSeq(Long userSkSeq) {
+        if (userSkSeq == null) {
+            return null;
+        }
+
+        return findAllUsers().stream()
+                .filter(user -> user.getId() != null && userSkSeq.equals(user.getId()))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -383,7 +406,7 @@ public class GoogleSheetsDataStore implements DataStore {
     public List<UserEntity> findAllUsers() {
         try {
             ValueRange response = sheetsService.spreadsheets().values()
-                    .get(properties.getSpreadsheetId(), properties.getUsersSheet() + "!A2:H")
+                    .get(properties.getSpreadsheetId(), properties.getUsersSheet() + "!A2:I")
                     .execute();
 
             List<UserEntity> users = new ArrayList<>();
@@ -403,6 +426,7 @@ public class GoogleSheetsDataStore implements DataStore {
                 user.setUserId(row.size() > 5 && row.get(5) != null ? String.valueOf(row.get(5)) : null);
                 user.setPassword(row.size() > 6 && row.get(6) != null ? String.valueOf(row.get(6)) : null);
                 user.setStatus(row.size() > 7 && row.get(7) != null ? String.valueOf(row.get(7)) : "ACTIVE");
+                user.setCreateDate(row.size() > 8 && row.get(8) != null ? String.valueOf(row.get(8)) : java.time.LocalDateTime.now().toString());
                 users.add(user);
             }
             return users;

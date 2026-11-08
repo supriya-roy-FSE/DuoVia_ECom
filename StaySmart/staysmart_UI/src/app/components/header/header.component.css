@@ -69,13 +69,64 @@
 .user-badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
-  padding: 0.55rem 0.9rem;
-  background: rgba(255,255,255,0.08);
+  gap: 0.45rem;
   border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+  background: rgba(255,255,255,0.08);
   color: #f8fafc;
   font-weight: 700;
   font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.caret {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.user-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.user-menu-item {
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  padding: 0.8rem 0.95rem;
+  color: #111827;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.user-menu-item:hover {
+  background: #f3f4f6;
+}
+
+.user-menu-item.muted {
+  color: #6b7280;
+}
+
+.user-menu-item.danger {
+  color: #b91c1c;
+  font-weight: 800;
+}
+
+.user-menu-item.danger:hover {
+  background: #fef2f2;
 }
 
 .login-btn,

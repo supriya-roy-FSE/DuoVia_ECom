@@ -16,6 +16,7 @@ public interface DataStore {
     List<FeedbackEntity> findAllFeedback();
 
     UserEntity saveUser(UserEntity user);
+    UserEntity findUserByUserSkSeq(Long userSkSeq);
     UserEntity findUserByUserId(String userId);
     UserEntity findUserByEmail(String email);
     List<UserEntity> findAllUsers();

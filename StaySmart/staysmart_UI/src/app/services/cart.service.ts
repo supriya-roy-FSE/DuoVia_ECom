@@ -133,6 +133,8 @@ export class CartService {
 
   submitCheckout(payload: OrderCheckoutPayload): Observable<CheckoutResponse> {
     const requestBody = {
+      userSkSeq: this.getCurrentUserSkSeq(),
+      userId: this.getCurrentUserId(),
       customerName: payload.customerName,
       email: payload.email,
       phone: payload.mobile,
@@ -202,5 +204,15 @@ export class CartService {
     } catch (error) {
       console.warn('Failed to save cart to localStorage:', error);
     }
+  }
+
+  private getCurrentUserId(): string {
+    const user = JSON.parse(localStorage.getItem('duovia_logged_in_user') ?? 'null');
+    return user?.userId ?? '';
+  }
+
+  private getCurrentUserSkSeq(): number | null {
+    const user = JSON.parse(localStorage.getItem('duovia_logged_in_user') ?? 'null');
+    return user?.userSkSeq ?? null;
   }
 }

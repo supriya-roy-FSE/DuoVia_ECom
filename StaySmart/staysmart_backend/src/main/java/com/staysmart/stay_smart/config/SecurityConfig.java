@@ -18,8 +18,8 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/admin/login", "/api/orders", "/api/feedback").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/admin/health", "/api/orders", "/api/feedback").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/admin/login", "/api/orders", "/api/feedback", "/api/users/register", "/api/users/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/admin/health", "/api/orders", "/api/feedback", "/api/users/me/**").permitAll()
                 .anyRequest().authenticated()
             );
 

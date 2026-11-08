@@ -29,11 +29,19 @@ public class UserController {
             return ResponseEntity.badRequest().body(new UserLoginResponse(false, "Password is required.", null));
         }
 
+        if (request.getUserName() == null || request.getUserName().isBlank()) {
+            return ResponseEntity.badRequest().body(new UserLoginResponse(false, "User name is required.", null));
+        }
+
+        if (request.getUserEmail() == null || request.getUserEmail().isBlank()) {
+            return ResponseEntity.badRequest().body(new UserLoginResponse(false, "Email is required.", null));
+        }
+
         if (dataStore.findUserByUserId(request.getUserId()) != null) {
             return ResponseEntity.status(409).body(new UserLoginResponse(false, "This user ID is already registered.", null));
         }
 
-        if (request.getUserEmail() != null && !request.getUserEmail().isBlank() && dataStore.findUserByEmail(request.getUserEmail()) != null) {
+        if (dataStore.findUserByEmail(request.getUserEmail()) != null) {
             return ResponseEntity.status(409).body(new UserLoginResponse(false, "This email is already in use.", null));
         }
 
@@ -45,6 +53,12 @@ public class UserController {
                 request.getUserId(),
                 request.getPassword()
         );
+        if (user.getId() == null) {
+            user.setId(System.currentTimeMillis());
+        }
+        if (user.getCreateDate() == null || user.getCreateDate().isBlank()) {
+            user.setCreateDate(java.time.LocalDateTime.now().toString());
+        }
 
         UserEntity saved = dataStore.saveUser(user);
         return ResponseEntity.ok(new UserLoginResponse(true, "Registration successful.", saved));
@@ -56,21 +70,25 @@ public class UserController {
             return ResponseEntity.badRequest().body(new UserLoginResponse(false, "User ID is required.", null));
         }
 
+        if (request.getPassword() == null || request.getPassword().isBlank()) {
+            return ResponseEntity.badRequest().body(new UserLoginResponse(false, "Password is required.", null));
+        }
+
         UserEntity user = dataStore.findUserByUserId(request.getUserId());
         if (user == null) {
-            return ResponseEntity.status(401).body(new UserLoginResponse(false, "User not found.", null));
+            return ResponseEntity.status(401).body(new UserLoginResponse(false, "this credential combinationdoesnot exists", null));
         }
 
         if (!request.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.status(401).body(new UserLoginResponse(false, "Incorrect password.", null));
+            return ResponseEntity.status(401).body(new UserLoginResponse(false, "this credential combinationdoesnot exists", null));
         }
 
         return ResponseEntity.ok(new UserLoginResponse(true, "Login successful.", user));
     }
 
-    @GetMapping("/me/{userId}")
-    public ResponseEntity<UserEntity> getProfile(@PathVariable String userId) {
-        UserEntity user = dataStore.findUserByUserId(userId);
+    @GetMapping("/me/{userSkSeq}")
+    public ResponseEntity<UserEntity> getProfile(@PathVariable Long userSkSeq) {
+        UserEntity user = dataStore.findUserByUserSkSeq(userSkSeq);
         return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
     }
 }

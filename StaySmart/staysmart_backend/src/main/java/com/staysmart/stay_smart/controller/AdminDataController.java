@@ -7,7 +7,6 @@ import com.staysmart.stay_smart.entity.FeedbackEntity;
 import com.staysmart.stay_smart.entity.OrderEntity;
 import com.staysmart.stay_smart.exception.CheckoutException;
 import com.staysmart.stay_smart.storage.DataStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,6 @@ public class AdminDataController {
 
     private final DataStore dataStore;
 
-    @Autowired
     public AdminDataController(DataStore dataStore) {
         this.dataStore = dataStore;
     }
@@ -41,6 +39,8 @@ public class AdminDataController {
         }
 
         OrderEntity order = new OrderEntity(
+            request.getUserSkSeq(),
+            request.getUserId(),
                 request.getCustomerName(),
                 request.getEmail(),
                 request.getPhone(),
@@ -105,5 +105,22 @@ public class AdminDataController {
     @GetMapping("/feedback")
     public ResponseEntity<List<FeedbackEntity>> getFeedbacks() {
         return ResponseEntity.ok(dataStore.findAllFeedback());
+    }
+
+    @GetMapping("/orders/user/{userSkSeq}")
+    public ResponseEntity<List<OrderEntity>> getOrdersByUserSkSeq(@PathVariable Long userSkSeq) {
+        List<OrderEntity> orders = dataStore.findAllOrders().stream()
+                .filter(order -> order.getUserSkSeq() != null && userSkSeq.equals(order.getUserSkSeq()))
+                .toList();
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/orders/user-sk-seq/{userSkSeq}")
+    public ResponseEntity<List<OrderEntity>> getOrdersByUserSkSeqAlias(@PathVariable Long userSkSeq) {
+        List<OrderEntity> orders = dataStore.findAllOrders().stream()
+                .filter(order -> order.getUserSkSeq() != null && userSkSeq.equals(order.getUserSkSeq()))
+                .toList();
+
+        return ResponseEntity.ok(orders);
     }
 }

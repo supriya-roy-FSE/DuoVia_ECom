@@ -60,6 +60,11 @@ public class DatabaseDataStore implements DataStore {
     }
 
     @Override
+    public UserEntity findUserByUserSkSeq(Long userSkSeq) {
+        return null;
+    }
+
+    @Override
     public UserEntity findUserByUserId(String userId) {
         return null;
     }

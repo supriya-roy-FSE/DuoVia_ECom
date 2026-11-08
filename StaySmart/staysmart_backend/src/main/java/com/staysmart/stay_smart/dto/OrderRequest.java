@@ -3,6 +3,8 @@ package com.staysmart.stay_smart.dto;
 import java.math.BigDecimal;
 
 public class OrderRequest {
+    private Long userSkSeq;
+    private String userId;
     private String customerName;
     private String email;
     private String phone;
@@ -10,6 +12,12 @@ public class OrderRequest {
     private Integer quantity;
     private BigDecimal totalPrice;
     private String status;
+
+    public Long getUserSkSeq() { return userSkSeq; }
+    public void setUserSkSeq(Long userSkSeq) { this.userSkSeq = userSkSeq; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }
