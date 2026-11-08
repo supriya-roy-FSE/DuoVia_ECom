@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 import {
   UserLoginRequest,
   UserLoginResponse,
@@ -13,7 +14,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8081/api/users';
+  private readonly baseUrl = `${environment.apiBaseUrl}/api/users`;
   private readonly sessionKey = 'duovia_logged_in_user';
 
   readonly currentUser = signal<UserSession | null>(this.loadSession());

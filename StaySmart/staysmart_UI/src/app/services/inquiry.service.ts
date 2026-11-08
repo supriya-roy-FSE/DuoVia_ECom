@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay, catchError, map } from 'rxjs/operators';
 import { OrderInquiry, OrderInquiryResponse } from '../models/tshirt.model';
+import { environment } from '../../environments/environment';
 
 /**
  * Inquiry Service
@@ -13,7 +14,7 @@ import { OrderInquiry, OrderInquiryResponse } from '../models/tshirt.model';
 })
 export class InquiryService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = `${environment.apiBaseUrl}/api`;
 
   /**
    * Submit an order inquiry to the webhook and Google Sheets

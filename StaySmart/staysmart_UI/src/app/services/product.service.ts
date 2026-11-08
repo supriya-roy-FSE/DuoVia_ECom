@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { forkJoin, map, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FolderImageManifest, ImageCatalogPayload, ProductCatalogEntry, TShirtProduct } from '../models/tshirt.model';
+import { environment } from '../../environments/environment';
 
 export type Category = 'men' | 'women' | 'kids';
 
@@ -11,7 +12,7 @@ export type Category = 'men' | 'women' | 'kids';
 })
 export class ProductService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = `${environment.apiBaseUrl}/api`;
 
   private readonly catalog = signal<Record<Category, TShirtProduct[]>>({
     men: [

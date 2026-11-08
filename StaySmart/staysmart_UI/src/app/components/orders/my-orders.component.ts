@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { CustomerOrderRecord } from '../../models/tshirt.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-orders',
@@ -95,6 +96,7 @@ import { CustomerOrderRecord } from '../../models/tshirt.model';
 })
 export class MyOrdersComponent {
   private readonly http = inject(HttpClient);
+  private readonly apiBaseUrl = environment.apiBaseUrl;
   readonly authService = inject(AuthService);
   readonly orders = signal<CustomerOrderRecord[]>([]);
   readonly isLoading = signal(false);
@@ -112,7 +114,7 @@ export class MyOrdersComponent {
     if (userSkSeq != null) {
       this.isLoading.set(true);
       this.hasFetchError.set(false);
-      this.http.get<CustomerOrderRecord[]>(`http://localhost:8081/api/orders/user/${encodeURIComponent(String(userSkSeq))}`).subscribe({
+      this.http.get<CustomerOrderRecord[]>(`${this.apiBaseUrl}/api/orders/user/${encodeURIComponent(String(userSkSeq))}`).subscribe({
         next: (data) => {
           this.orders.set(data ?? []);
           this.isLoading.set(false);

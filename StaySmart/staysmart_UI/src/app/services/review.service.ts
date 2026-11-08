@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { CustomerReview, ReviewSubmission, ReviewSubmissionResponse } from '../models/review.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = `${environment.apiBaseUrl}/api`;
 
   submitReview(review: ReviewSubmission): Observable<ReviewSubmissionResponse> {
     const payload = {

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface AdminLoginRequest {
   username: string;
@@ -18,7 +19,7 @@ export interface AdminLoginResponse {
 })
 export class AdminApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = `${environment.apiBaseUrl}/api`;
 
   login(username: string, password: string): Observable<AdminLoginResponse> {
     return this.http.post<AdminLoginResponse>(`${this.baseUrl}/admin/login`, {

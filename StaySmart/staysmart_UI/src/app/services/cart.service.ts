@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import {
   OrderCheckoutPayload,
   OrderEntryType,
@@ -18,7 +19,7 @@ import {
 })
 export class CartService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8081/api';
+  private readonly baseUrl = `${environment.apiBaseUrl}/api`;
   private readonly STORAGE_KEY = 'duovia_cart_items';
   private readonly ORDER_WEBHOOK_URL = `${this.baseUrl}/orders`;
 
