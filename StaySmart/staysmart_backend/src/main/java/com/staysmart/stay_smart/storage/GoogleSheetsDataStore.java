@@ -139,6 +139,7 @@ public class GoogleSheetsDataStore implements DataStore {
             "email",
             "message",
             "rating",
+            "photoUrl",
             "createdAt"
     };
 
@@ -175,6 +176,7 @@ public class GoogleSheetsDataStore implements DataStore {
         row.add(normalizeCellValue(feedback.getEmail()));
         row.add(normalizeCellValue(feedback.getMessage()));
         row.add(normalizeCellValue(feedback.getRating()));
+        row.add(normalizeCellValue(feedback.getPhotoUrl()));
         row.add(normalizeCellValue(feedback.getCreatedAt() == null ? null : feedback.getCreatedAt().toString()));
         return row;
     }
@@ -384,7 +386,7 @@ public class GoogleSheetsDataStore implements DataStore {
 
         try {
             sheetsService.spreadsheets().values()
-                    .append(properties.getSpreadsheetId(), properties.getFeedbackSheet() + "!A:F", new ValueRange().setValues(List.of(row)))
+                    .append(properties.getSpreadsheetId(), properties.getFeedbackSheet() + "!A:G", new ValueRange().setValues(List.of(row)))
                     .setValueInputOption("USER_ENTERED")
                     .setInsertDataOption("INSERT_ROWS")
                     .execute();
@@ -399,7 +401,7 @@ public class GoogleSheetsDataStore implements DataStore {
     public List<FeedbackEntity> findAllFeedback() {
         try {
             ValueRange response = sheetsService.spreadsheets().values()
-                    .get(properties.getSpreadsheetId(), properties.getFeedbackSheet() + "!A2:F")
+                    .get(properties.getSpreadsheetId(), properties.getFeedbackSheet() + "!A2:G")
                     .execute();
 
             List<FeedbackEntity> feedbacks = new ArrayList<>();
@@ -416,8 +418,9 @@ public class GoogleSheetsDataStore implements DataStore {
                 feedback.setEmail(row.size() > 2 && row.get(2) != null ? String.valueOf(row.get(2)) : null);
                 feedback.setMessage(row.size() > 3 && row.get(3) != null ? String.valueOf(row.get(3)) : null);
                 feedback.setRating(row.size() > 4 && row.get(4) != null ? Integer.valueOf(String.valueOf(row.get(4))) : null);
+                feedback.setPhotoUrl(row.size() > 5 && row.get(5) != null ? String.valueOf(row.get(5)) : null);
 
-                String createdAt = row.size() > 5 && row.get(5) != null ? String.valueOf(row.get(5)) : null;
+                String createdAt = row.size() > 6 && row.get(6) != null ? String.valueOf(row.get(6)) : null;
                 feedback.setCreatedAt(createdAt != null ? LocalDateTime.parse(createdAt) : LocalDateTime.now());
                 feedbacks.add(feedback);
             }

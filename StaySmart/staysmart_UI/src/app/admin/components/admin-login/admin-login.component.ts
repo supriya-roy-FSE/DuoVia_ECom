@@ -51,7 +51,7 @@ export class AdminLoginComponent {
       },
       error: () => {
         this.isSubmitting.set(false);
-        this.errorMessage.set('Unable to reach the admin backend. Please check that the Spring Boot app is running on port 8081.');
+        this.errorMessage.set('Unable to reach the admin backend.');
       }
     });
   }

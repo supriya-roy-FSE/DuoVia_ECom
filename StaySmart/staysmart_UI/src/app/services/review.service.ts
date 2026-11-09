@@ -14,15 +14,18 @@ export class ReviewService {
 
   submitReview(review: ReviewSubmission): Observable<ReviewSubmissionResponse> {
     const payload = {
-      ...review,
-      submittedAt: new Date().toISOString(),
-      status: 'pending'
+      customerName: review.customerName,
+      email: review.email,
+      message: review.reviewText,
+      rating: review.rating,
+      photoUrl: review.photoUrl || ''
     };
 
-    return this.http.post<ReviewSubmissionResponse>(`${this.baseUrl}/reviews`, payload).pipe(
+    return this.http.post<{ id?: number }>(`${this.baseUrl}/feedback`, payload).pipe(
       map(response => ({
-        ...response,
-        reviewId: response.reviewId || `REV-${Date.now()}`
+        success: true,
+        message: 'Review submitted successfully.',
+        reviewId: response?.id ? `REV-${response.id}` : `REV-${Date.now()}`
       })),
       catchError(() => of({
         success: false,

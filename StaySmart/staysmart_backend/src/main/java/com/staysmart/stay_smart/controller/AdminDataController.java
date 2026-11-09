@@ -95,7 +95,8 @@ public class AdminDataController {
                 request.getCustomerName(),
                 request.getEmail(),
                 request.getMessage(),
-                request.getRating()
+                request.getRating(),
+                request.getPhotoUrl()
         );
 
         FeedbackEntity saved = dataStore.saveFeedback(feedback);

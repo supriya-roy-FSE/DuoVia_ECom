@@ -23,6 +23,8 @@ public class FeedbackEntity {
     @Column(nullable = false)
     private Integer rating;
 
+    private String photoUrl;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -30,11 +32,12 @@ public class FeedbackEntity {
         this.createdAt = LocalDateTime.now();
     }
 
-    public FeedbackEntity(String customerName, String email, String message, Integer rating) {
+    public FeedbackEntity(String customerName, String email, String message, Integer rating, String photoUrl) {
         this.customerName = customerName;
         this.email = email;
         this.message = message;
         this.rating = rating;
+        this.photoUrl = photoUrl;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -52,6 +55,9 @@ public class FeedbackEntity {
 
     public Integer getRating() { return rating; }
     public void setRating(Integer rating) { this.rating = rating; }
+
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

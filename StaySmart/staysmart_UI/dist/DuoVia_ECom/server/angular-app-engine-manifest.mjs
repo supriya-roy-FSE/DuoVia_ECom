@@ -1,6 +1,6 @@
 
 export default {
-  basePath: '/DuoVia_ECom',
+  basePath: '/',
   allowedHosts: [
   "localhost",
   "127.0.0.1",

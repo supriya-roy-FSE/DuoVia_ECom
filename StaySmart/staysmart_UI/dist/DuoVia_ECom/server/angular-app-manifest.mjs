@@ -2,7 +2,7 @@
 export default {
   bootstrap: () => import('./main.server.mjs').then(m => m.default),
   inlineCriticalCss: true,
-  baseHref: '/DuoVia_ECom/',
+  baseHref: '/',
   locale: undefined,
   routes: [
   {
@@ -70,9 +70,9 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 21869, hash: '7db29e51134d55f6e288f26ccaaf75a7860a09a4e97d3a12db65752067a3632e', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 20796, hash: '9ed7a9718932d232df188acef64d7e235d42d86272826e3c393269ce394933d7', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'index.html': {size: 58579, hash: '43479086861575a96eb0aeee2e9c0bd657060c6f0acfe2a862048ebfa4745690', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 21869, hash: 'a3171c5cf509e3b2f9efe7c45899c3f2d718080cd8a5a9f9b1644fa06b541f83', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 20796, hash: 'f1758673d89161e525e2a311c8c9106dc1d85ee572a24b20b514eb25c564dcad', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'DuoVia_ECom/index.html': {size: 58579, hash: '1977cacc8b0479d3be397b4c327b10c8b71daea6e048022e48e051b93911676b', text: () => import('./assets-chunks/DuoVia_ECom_index_html.mjs').then(m => m.default)},
     'styles-JICB6I2V.css': {size: 2274, hash: 'UOLRmhTOo5M', text: () => import('./assets-chunks/styles-JICB6I2V_css.mjs').then(m => m.default)}
   },
 };
